@@ -8,7 +8,12 @@ import Console from "@/components/Console";
 import BlueskyPost from "@/components/BlueskyPost";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import {
   WorkspaceShell,
   WorkspaceHeader,
@@ -101,7 +106,8 @@ function Workspace() {
       },
       {
         id: "share",
-        label: activePanel === "share" ? "Hide Bluesky tools" : "Open Bluesky tools",
+        label:
+          activePanel === "share" ? "Hide Bluesky tools" : "Open Bluesky tools",
         icon: Share2,
         toggle: "share",
         active: activePanel === "share",
@@ -111,13 +117,20 @@ function Workspace() {
   );
 
   return (
-    <TooltipProvider delayDuration={150} skipDelayDuration={80} disableHoverableContent>
+    <TooltipProvider
+      delayDuration={150}
+      skipDelayDuration={80}
+      disableHoverableContent
+    >
       <WorkspaceShell>
         <Header />
         <WorkspaceMain>
           <WorkspaceColumns>
             <EditorPane />
-            <PreviewPane activePanel={activePanel} onClose={() => setActivePanel(null)} />
+            <PreviewPane
+              activePanel={activePanel}
+              onClose={() => setActivePanel(null)}
+            />
           </WorkspaceColumns>
         </WorkspaceMain>
         <FooterBar actions={footerActions} onTogglePanel={handleTogglePanel} />
@@ -147,38 +160,37 @@ function EditorPane() {
       <WorkspacePaneCard>
         <WorkspacePaneCardHeader
           title="sketch.js"
-          description="Write your p5.js sketch. Changes are saved automatically."
           meta={<Badge variant="outline">Autosave</Badge>}
         />
         <WorkspacePaneCardContent>
           <Editor />
         </WorkspacePaneCardContent>
-        <WorkspacePaneCardFooter>
-          Tip: your code stays in local storage between visits.
-        </WorkspacePaneCardFooter>
       </WorkspacePaneCard>
     </WorkspacePane>
   );
 }
 
-function PreviewPane({ activePanel, onClose }: { activePanel: PanelKey; onClose: () => void }) {
+function PreviewPane({
+  activePanel,
+  onClose,
+}: {
+  activePanel: PanelKey;
+  onClose: () => void;
+}) {
   return (
     <WorkspacePane size="preview">
-      <WorkspacePaneCard>
-        <WorkspacePaneCardHeader
-          title="Canvas Preview"
-          description="Live output rendered from your sketch."
-        />
-        <WorkspacePaneCardContent>
-          <Canvas />
-        </WorkspacePaneCardContent>
-      </WorkspacePaneCard>
+      <Canvas />
       {activePanel && (
         <WorkspaceDock>
           <WorkspaceDockHeader
             title={activePanel === "console" ? "Console" : "Bluesky Tools"}
             action={
-              <Button size="icon" variant="ghost" onClick={onClose} aria-label="Close panel">
+              <Button
+                size="icon"
+                variant="ghost"
+                onClick={onClose}
+                aria-label="Close panel"
+              >
                 <X size={20} />
               </Button>
             }
@@ -201,43 +213,41 @@ function FooterBar({
 }) {
   return (
     <WorkspaceFooter>
-      {actions.map(({ id, label, icon: Icon, onClick, toggle, active, disabled }) => {
-        const handleClick = () => {
-          if (disabled) return;
-          if (toggle) {
-            onTogglePanel(toggle);
-          } else {
-            onClick?.();
-          }
-        };
+      {actions.map(
+        ({ id, label, icon: Icon, onClick, toggle, active, disabled }) => {
+          const handleClick = () => {
+            if (disabled) return;
+            if (toggle) {
+              onTogglePanel(toggle);
+            } else {
+              onClick?.();
+            }
+          };
 
-        return (
-          <Tooltip key={id}>
-            <TooltipTrigger asChild>
-              <Button
-                size="icon"
-                variant={resolveButtonVariant(id, active)}
-                onClick={handleClick}
-                aria-label={label}
-                aria-pressed={active ? true : undefined}
-                disabled={disabled}
-              >
-                <Icon size={20} />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent side="top">
-              {label}
-            </TooltipContent>
-          </Tooltip>
-        );
-      })}
+          return (
+            <Tooltip key={id}>
+              <TooltipTrigger asChild>
+                <Button
+                  size="icon"
+                  variant={resolveButtonVariant(id, active)}
+                  onClick={handleClick}
+                  aria-label={label}
+                  aria-pressed={active ? true : undefined}
+                  disabled={disabled}
+                >
+                  <Icon size={20} />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="top">{label}</TooltipContent>
+            </Tooltip>
+          );
+        }
+      )}
     </WorkspaceFooter>
   );
 }
 
 function resolveButtonVariant(actionId: string, active?: boolean) {
-  if (actionId === "run") return "default" as const;
-  if (actionId === "stop") return "destructive" as const;
   if (active) return "outline" as const;
   return "ghost" as const;
 }

@@ -3,15 +3,16 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-const DockPanel = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn("flex h-full min-h-[220px] flex-col gap-5", className)}
-      {...props}
-    />
-  )
-);
+const DockPanel = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn("flex h-full min-h-[220px] flex-col gap-5", className)}
+    {...props}
+  />
+));
 DockPanel.displayName = "DockPanel";
 
 interface DockPanelHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -20,7 +21,13 @@ interface DockPanelHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
   action?: React.ReactNode;
 }
 
-const DockPanelHeader = ({ title, description, action, className, ...props }: DockPanelHeaderProps) => (
+const DockPanelHeader = ({
+  title,
+  description,
+  action,
+  className,
+  ...props
+}: DockPanelHeaderProps) => (
   <div
     className={cn("flex flex-shrink-0 items-center justify-between", className)}
     {...props}
@@ -35,15 +42,16 @@ const DockPanelHeader = ({ title, description, action, className, ...props }: Do
   </div>
 );
 
-const DockPanelContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn("flex flex-1 flex-col overflow-hidden", className)}
-      {...props}
-    />
-  )
-);
+const DockPanelContent = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn("flex flex-1 flex-col overflow-hidden", className)}
+    {...props}
+  />
+));
 DockPanelContent.displayName = "DockPanelContent";
 
 const DockScrollArea = React.forwardRef<
@@ -52,7 +60,7 @@ const DockScrollArea = React.forwardRef<
 >(({ className, children, ...props }, ref) => (
   <ScrollArea
     ref={ref}
-    className={cn("flex-1 overflow-hidden rounded-lg border bg-muted/40", className)}
+    className={cn("flex-1 overflow-hidden bg-muted/40", className)}
     {...props}
   >
     <div className="p-4 text-sm text-muted-foreground">{children}</div>
@@ -65,64 +73,76 @@ interface DockLogOutputProps {
 }
 
 const DockLogOutput = ({ value }: DockLogOutputProps) => (
-  <pre className="whitespace-pre-wrap font-mono text-[13px] leading-relaxed">{value}</pre>
+  <pre className="whitespace-pre-wrap font-mono text-[13px] leading-relaxed">
+    {value}
+  </pre>
 );
 
-const DockForm = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn("flex flex-col gap-5", className)} {...props} />
-  )
-);
+const DockForm = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div ref={ref} className={cn("flex flex-col gap-5", className)} {...props} />
+));
 DockForm.displayName = "DockForm";
 
-const DockFormGrid = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn("grid gap-4 sm:grid-cols-2", className)} {...props} />
-  )
-);
+const DockFormGrid = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn("grid gap-4 sm:grid-cols-2", className)}
+    {...props}
+  />
+));
 DockFormGrid.displayName = "DockFormGrid";
 
-const DockFormField = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn("flex flex-col gap-2", className)} {...props} />
-  )
-);
+const DockFormField = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div ref={ref} className={cn("flex flex-col gap-2", className)} {...props} />
+));
 DockFormField.displayName = "DockFormField";
 
-const DockFormFooter = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn(
-        "flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between",
-        className
-      )}
-      {...props}
-    />
-  )
-);
+const DockFormFooter = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn(
+      "flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between",
+      className
+    )}
+    {...props}
+  />
+));
 DockFormFooter.displayName = "DockFormFooter";
 
-const DockFormStatus = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLParagraphElement>>(
-  ({ className, ...props }, ref) => (
-    <p
-      ref={ref}
-      className={cn("text-xs text-muted-foreground", className)}
-      {...props}
-    />
-  )
-);
+const DockFormStatus = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLParagraphElement>
+>(({ className, ...props }, ref) => (
+  <p
+    ref={ref}
+    className={cn("text-xs text-muted-foreground", className)}
+    {...props}
+  />
+));
 DockFormStatus.displayName = "DockFormStatus";
 
-const DockFormNote = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLParagraphElement>>(
-  ({ className, ...props }, ref) => (
-    <p
-      ref={ref}
-      className={cn("text-xs text-muted-foreground", className)}
-      {...props}
-    />
-  )
-);
+const DockFormNote = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLParagraphElement>
+>(({ className, ...props }, ref) => (
+  <p
+    ref={ref}
+    className={cn("text-xs text-muted-foreground", className)}
+    {...props}
+  />
+));
 DockFormNote.displayName = "DockFormNote";
 
 export {

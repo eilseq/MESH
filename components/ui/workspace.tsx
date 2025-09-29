@@ -13,66 +13,70 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 
-const WorkspaceShell = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn("flex h-screen flex-col overflow-hidden", className)}
-      {...props}
-    />
-  )
-);
+const WorkspaceShell = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn("flex h-screen flex-col overflow-hidden", className)}
+    {...props}
+  />
+));
 WorkspaceShell.displayName = "WorkspaceShell";
 
-const WorkspaceHeader = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(
-  ({ className, children, ...props }, ref) => (
-    <header
-      ref={ref}
-      className={cn("flex-shrink-0 border-b bg-card/80 backdrop-blur", className)}
-      {...props}
-    >
-      <div className="mx-auto flex w-full max-w-[1600px] flex-wrap items-center gap-4 px-6 py-4">
-        {children}
-      </div>
-    </header>
-  )
-);
+const WorkspaceHeader = React.forwardRef<
+  HTMLElement,
+  React.HTMLAttributes<HTMLElement>
+>(({ className, children, ...props }, ref) => (
+  <header
+    ref={ref}
+    className={cn("flex-shrink-0 border-b bg-card/80 backdrop-blur", className)}
+    {...props}
+  >
+    <div className="mx-auto flex w-full max-w-[1600px] flex-wrap items-center gap-4 px-6 py-4">
+      {children}
+    </div>
+  </header>
+));
 WorkspaceHeader.displayName = "WorkspaceHeader";
 
-const WorkspaceHeaderMeta = React.forwardRef<HTMLSpanElement, React.HTMLAttributes<HTMLSpanElement>>(
-  ({ className, ...props }, ref) => (
-    <span
-      ref={ref}
-      className={cn(
-        "text-xs uppercase tracking-[0.3em] text-muted-foreground",
-        className
-      )}
-      {...props}
-    />
-  )
-);
+const WorkspaceHeaderMeta = React.forwardRef<
+  HTMLSpanElement,
+  React.HTMLAttributes<HTMLSpanElement>
+>(({ className, ...props }, ref) => (
+  <span
+    ref={ref}
+    className={cn(
+      "text-xs uppercase tracking-[0.3em] text-muted-foreground",
+      className
+    )}
+    {...props}
+  />
+));
 WorkspaceHeaderMeta.displayName = "WorkspaceHeaderMeta";
 
-const WorkspaceHeaderTitle = React.forwardRef<HTMLHeadingElement, React.HTMLAttributes<HTMLHeadingElement>>(
-  ({ className, ...props }, ref) => (
-    <h1
-      ref={ref}
-      className={cn("text-2xl font-semibold tracking-tight text-foreground", className)}
-      {...props}
-    />
-  )
-);
+const WorkspaceHeaderTitle = React.forwardRef<
+  HTMLHeadingElement,
+  React.HTMLAttributes<HTMLHeadingElement>
+>(({ className, ...props }, ref) => (
+  <h1
+    ref={ref}
+    className={cn(
+      "text-2xl font-semibold tracking-tight text-foreground",
+      className
+    )}
+    {...props}
+  />
+));
 WorkspaceHeaderTitle.displayName = "WorkspaceHeaderTitle";
 
-const WorkspaceHeaderStack = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn("flex flex-col gap-1", className)}
-      {...props}
-    />
-  )
-);
+const WorkspaceHeaderStack = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div ref={ref} className={cn("flex flex-col gap-1", className)} {...props} />
+));
 WorkspaceHeaderStack.displayName = "WorkspaceHeaderStack";
 
 const WorkspaceHeaderSeparator = React.forwardRef<
@@ -88,15 +92,16 @@ const WorkspaceHeaderSeparator = React.forwardRef<
 ));
 WorkspaceHeaderSeparator.displayName = "WorkspaceHeaderSeparator";
 
-const WorkspaceSearchArea = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn("ml-auto flex w-full max-w-xl items-center gap-3", className)}
-      {...props}
-    />
-  )
-);
+const WorkspaceSearchArea = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn("ml-auto flex w-full max-w-xl items-center gap-3", className)}
+    {...props}
+  />
+));
 WorkspaceSearchArea.displayName = "WorkspaceSearchArea";
 
 const WorkspaceSearchInput = React.forwardRef<
@@ -105,35 +110,40 @@ const WorkspaceSearchInput = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <Input
     ref={ref}
-    className={cn("h-11 rounded-lg border-muted bg-muted/40 text-base", className)}
+    className={cn(
+      "h-11 rounded-lg border-muted bg-muted/40 text-base",
+      className
+    )}
     {...props}
   />
 ));
 WorkspaceSearchInput.displayName = "WorkspaceSearchInput";
 
-const WorkspaceMain = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn("flex flex-1 flex-col overflow-hidden", className)}
-      {...props}
-    />
-  )
-);
+const WorkspaceMain = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn("flex flex-1 flex-col overflow-hidden", className)}
+    {...props}
+  />
+));
 WorkspaceMain.displayName = "WorkspaceMain";
 
-const WorkspaceColumns = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn(
-        "mx-auto flex w-full max-w-[1600px] flex-1 flex-col gap-6 overflow-hidden px-6 py-6 lg:flex-row lg:gap-8",
-        className
-      )}
-      {...props}
-    />
-  )
-);
+const WorkspaceColumns = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn(
+      "flex w-full flex-1 flex-col overflow-hidden lg:flex-row",
+      className
+    )}
+    {...props}
+  />
+));
 WorkspaceColumns.displayName = "WorkspaceColumns";
 
 const workspacePaneVariants = cva(
@@ -191,7 +201,12 @@ const WorkspacePaneCardHeader = ({
   meta,
   className,
 }: WorkspacePaneCardHeaderProps) => (
-  <CardHeader className={cn("flex flex-row items-center justify-between gap-4", className)}>
+  <CardHeader
+    className={cn(
+      "flex flex-row items-center justify-between gap-4",
+      className
+    )}
+  >
     <div className="space-y-1">
       <CardTitle className="text-xl">{title}</CardTitle>
       {description ? (
@@ -222,32 +237,42 @@ const WorkspacePaneCardFooter = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <CardFooter
     ref={ref}
-    className={cn("border-t px-6 py-4 text-sm text-muted-foreground", className)}
+    className={cn(
+      "border-t px-6 py-4 text-sm text-muted-foreground",
+      className
+    )}
     {...props}
   />
 ));
 WorkspacePaneCardFooter.displayName = "WorkspacePaneCardFooter";
 
-const WorkspaceDock = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn(
-        "mt-4 flex h-64 flex-col overflow-hidden rounded-lg border bg-card shadow-sm",
-        className
-      )}
-      {...props}
-    />
-  )
-);
+const WorkspaceDock = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn(
+      "flex h-64 flex-col overflow-hidden border bg-card",
+      className
+    )}
+    {...props}
+  />
+));
 WorkspaceDock.displayName = "WorkspaceDock";
 
-interface WorkspaceDockHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
+interface WorkspaceDockHeaderProps
+  extends React.HTMLAttributes<HTMLDivElement> {
   title: string;
   action?: React.ReactNode;
 }
 
-const WorkspaceDockHeader = ({ title, action, className, ...props }: WorkspaceDockHeaderProps) => (
+const WorkspaceDockHeader = ({
+  title,
+  action,
+  className,
+  ...props
+}: WorkspaceDockHeaderProps) => (
   <div
     className={cn(
       "flex flex-shrink-0 items-center justify-between border-b px-4 py-3",
@@ -262,30 +287,32 @@ const WorkspaceDockHeader = ({ title, action, className, ...props }: WorkspaceDo
   </div>
 );
 
-const WorkspaceDockContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn("flex flex-1 overflow-hidden px-4 py-4", className)}
-      {...props}
-    />
-  )
-);
+const WorkspaceDockContent = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn("flex flex-1 overflow-hidden px-4 py-4", className)}
+    {...props}
+  />
+));
 WorkspaceDockContent.displayName = "WorkspaceDockContent";
 
-const WorkspaceFooter = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(
-  ({ className, children, ...props }, ref) => (
-    <footer
-      ref={ref}
-      className={cn("flex-shrink-0 border-t bg-card", className)}
-      {...props}
-    >
-      <div className="mx-auto flex w-full max-w-[1600px] items-center gap-2 px-4 py-3">
-        {children}
-      </div>
-    </footer>
-  )
-);
+const WorkspaceFooter = React.forwardRef<
+  HTMLElement,
+  React.HTMLAttributes<HTMLElement>
+>(({ className, children, ...props }, ref) => (
+  <footer
+    ref={ref}
+    className={cn("flex-shrink-0 border-t bg-card", className)}
+    {...props}
+  >
+    <div className="mx-auto flex w-full max-w-[1600px] items-center gap-2 px-4 py-3">
+      {children}
+    </div>
+  </footer>
+));
 WorkspaceFooter.displayName = "WorkspaceFooter";
 
 export {
