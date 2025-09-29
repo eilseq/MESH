@@ -10,13 +10,14 @@ export default function AboutPage() {
           variant="secondary"
           className="rounded-full px-3 py-1 text-xs uppercase tracking-wide"
         >
+          A project by
           <Link
-            href="https://eilseq.com"
+            href="https://bsky.app/profile/illegalsequence.bsky.social"
             className="ml-1 underline hover:text-primary"
             target="_blank"
             rel="noreferrer"
           >
-            A project by EILSEQ
+            EILSEQ
           </Link>
         </Badge>
         <h1 className="text-3xl font-semibold tracking-tight md:text-4xl text-left">
