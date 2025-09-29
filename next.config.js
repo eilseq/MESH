@@ -2,7 +2,8 @@ const path = require("path");
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
+  // Disable React strict mode to avoid p5 sketches executing twice in dev
+  reactStrictMode: false,
   webpack: (config) => {
     const alias = {
       "@": path.resolve(__dirname),
