@@ -1,16 +1,48 @@
 "use client";
 
-import { useCallback, useId } from "react";
+import { useCallback, useEffect, useId, useState } from "react";
 import { Editor as MonacoEditor } from "@monaco-editor/react";
 
 import { Label } from "@/components/ui/label";
 import { FieldStack } from "@/components/ui/field";
 import { useEditor } from "@/context/EditorContext";
+import { THEME_CHANGE_EVENT, getDocumentTheme, type ThemePreference } from "@/lib/theme";
 
 export default function Editor() {
   const { code, setCode } = useEditor();
   const baseId = useId();
   const labelId = `${baseId}-label`;
+  const [monacoTheme, setMonacoTheme] = useState(() => {
+    if (typeof document !== "undefined") {
+      const theme = getDocumentTheme();
+      return theme === "dark" ? "vs-dark" : "vs-light";
+    }
+    return "vs-dark";
+  });
+
+  useEffect(() => {
+    const syncTheme = () => {
+      const theme = getDocumentTheme();
+      setMonacoTheme(theme === "dark" ? "vs-dark" : "vs-light");
+    };
+
+    const handleThemeChange = (event: Event) => {
+      const customEvent = event as CustomEvent<{ theme?: ThemePreference }>;
+      const next = customEvent.detail?.theme;
+      if (next === "dark" || next === "light") {
+        setMonacoTheme(next === "dark" ? "vs-dark" : "vs-light");
+      } else {
+        syncTheme();
+      }
+    };
+
+    syncTheme();
+    window.addEventListener(THEME_CHANGE_EVENT, handleThemeChange);
+
+    return () => {
+      window.removeEventListener(THEME_CHANGE_EVENT, handleThemeChange);
+    };
+  }, []);
 
   const handleChange = useCallback(
     (value?: string) => {
@@ -44,7 +76,7 @@ export default function Editor() {
             smoothScrolling: true,
             wordWrap: "on",
           }}
-          theme="vs-light"
+          theme={monacoTheme}
           loading={
             <div className="flex flex-1 items-center justify-center text-sm text-muted-foreground">
               Loading editor…

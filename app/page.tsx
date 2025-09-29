@@ -14,6 +14,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import {
   WorkspaceShell,
   WorkspaceHeader,
@@ -237,36 +238,41 @@ function FooterBar({
 }) {
   return (
     <WorkspaceFooter>
-      {actions.map(
-        ({ id, label, icon: Icon, onClick, toggle, active, disabled }) => {
-          const handleClick = () => {
-            if (disabled) return;
-            if (toggle) {
-              onTogglePanel(toggle);
-            } else {
-              onClick?.();
-            }
-          };
+      <div className="flex items-center gap-2">
+        {actions.map(
+          ({ id, label, icon: Icon, onClick, toggle, active, disabled }) => {
+            const handleClick = () => {
+              if (disabled) return;
+              if (toggle) {
+                onTogglePanel(toggle);
+              } else {
+                onClick?.();
+              }
+            };
 
-          return (
-            <Tooltip key={id}>
-              <TooltipTrigger asChild>
-                <Button
-                  size="icon"
-                  variant={resolveButtonVariant(id, active)}
-                  onClick={handleClick}
-                  aria-label={label}
-                  aria-pressed={active ? true : undefined}
-                  disabled={disabled}
-                >
-                  <Icon size={20} />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent side="top">{label}</TooltipContent>
-            </Tooltip>
-          );
-        }
-      )}
+            return (
+              <Tooltip key={id}>
+                <TooltipTrigger asChild>
+                  <Button
+                    size="icon"
+                    variant={resolveButtonVariant(id, active)}
+                    onClick={handleClick}
+                    aria-label={label}
+                    aria-pressed={active ? true : undefined}
+                    disabled={disabled}
+                  >
+                    <Icon size={20} />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent side="top">{label}</TooltipContent>
+              </Tooltip>
+            );
+          }
+        )}
+      </div>
+      <div className="ml-auto">
+        <ThemeToggle />
+      </div>
     </WorkspaceFooter>
   );
 }
