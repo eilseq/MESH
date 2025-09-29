@@ -25,7 +25,7 @@ export default function Canvas() {
   return (
     <div
       ref={containerRef}
-      className="bg-black rounded-xl border border-zinc-800 overflow-hidden min-h-[320px] flex justify-center items-center"
+      className="flex min-h-[320px] items-center justify-center overflow-hidden rounded-lg border bg-black"
     />
   );
 }

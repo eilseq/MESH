@@ -1,6 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { useEditor } from "@/context/EditorContext";
 import { BlueskyClient } from "@/lib/bluesky";
 
@@ -31,40 +36,60 @@ export default function BlueskyPost() {
   }
 
   return (
-    <div>
-      <div className="font-semibold mb-2 text-zinc-300">Post to Bluesky</div>
-      <div className="grid gap-2 sm:grid-cols-2">
-        <input
-          value={handle}
-          onChange={(e) => setHandle(e.target.value)}
-          placeholder="Handle (e.g. user.bsky.social)"
-          className="px-3 py-2 rounded bg-zinc-800 text-sm outline-none"
-        />
-        <input
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="App Password"
-          type="password"
-          className="px-3 py-2 rounded bg-zinc-800 text-sm outline-none"
-        />
-      </div>
-      <input
-        value={caption}
-        onChange={(e) => setCaption(e.target.value)}
-        placeholder="Caption"
-        className="w-full mt-2 px-3 py-2 rounded bg-zinc-800 text-sm outline-none"
-      />
-      <button
-        onClick={post}
-        className="mt-2 w-full px-3 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-sm"
-      >
-        Post Canvas Snapshot
-      </button>
-      <p className="text-xs text-zinc-400 mt-2">{status}</p>
-      <p className="text-[10px] text-zinc-500 mt-1">
-        Use a Bluesky <em>App Password</em>, not your main account password.
-        Credentials are not stored.
-      </p>
-    </div>
+    <Card>
+      <CardHeader className="pb-4">
+        <CardTitle className="text-base">Post to Bluesky</CardTitle>
+        <CardDescription>Share a canvas snapshot directly to your Bluesky feed.</CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div className="space-y-2">
+            <Label htmlFor="bluesky-handle">Handle</Label>
+            <Input
+              id="bluesky-handle"
+              value={handle}
+              onChange={(e) => setHandle(e.target.value)}
+              placeholder="user.bsky.social"
+              autoComplete="username"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="bluesky-password">App password</Label>
+            <Input
+              id="bluesky-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="xxxx-xxxx-xxxx-xxxx"
+              type="password"
+              autoComplete="current-password"
+            />
+          </div>
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="bluesky-caption">Caption</Label>
+          <Textarea
+            id="bluesky-caption"
+            value={caption}
+            onChange={(e) => setCaption(e.target.value)}
+            placeholder="p5.js sketch snapshot"
+            rows={2}
+          />
+        </div>
+      </CardContent>
+      <CardFooter className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <Button onClick={post} className="w-full sm:w-auto">
+          Post Canvas Snapshot
+        </Button>
+        <p className="text-xs text-muted-foreground sm:text-right">
+          {status || ""}
+        </p>
+      </CardFooter>
+      <CardContent className="pt-0">
+        <p className="text-[11px] text-muted-foreground">
+          Use a Bluesky <span className="font-medium">App Password</span>, not your main account
+          password. Credentials are never stored.
+        </p>
+      </CardContent>
+    </Card>
   );
 }
