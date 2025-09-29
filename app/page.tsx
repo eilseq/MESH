@@ -21,20 +21,18 @@ import {
   WorkspaceHeaderTitle,
   WorkspaceHeaderStack,
   WorkspaceHeaderSeparator,
-  WorkspaceSearchArea,
-  WorkspaceSearchInput,
   WorkspaceMain,
   WorkspaceColumns,
   WorkspacePane,
   WorkspacePaneCard,
   WorkspacePaneCardHeader,
   WorkspacePaneCardContent,
-  WorkspacePaneCardFooter,
   WorkspaceDock,
   WorkspaceDockHeader,
   WorkspaceDockContent,
   WorkspaceFooter,
 } from "@/components/ui/workspace";
+import { PageMenu } from "@/components/PageMenu";
 import { EditorProvider, useEditor } from "@/context/EditorContext";
 import { Play, Share2, Square, Terminal, X, Zap } from "lucide-react";
 
@@ -47,6 +45,8 @@ export default function Page() {
 }
 
 type PanelKey = "console" | "share" | null;
+
+type WorkspacePage = "editor" | "archive" | "about";
 
 type FooterAction = {
   id: string;
@@ -61,6 +61,7 @@ type FooterAction = {
 function Workspace() {
   const { run, stop, autoRun, toggleAutoRun } = useEditor();
   const [activePanel, setActivePanel] = useState<PanelKey>(null);
+  const [activePage, setActivePage] = useState<WorkspacePage>("editor");
 
   const handleRun = useCallback(() => {
     run?.();
@@ -116,6 +117,13 @@ function Workspace() {
     [activePanel, autoRun, handleRun, handleStop, run, stop, toggleAutoRun]
   );
 
+  const handleSelectPage = useCallback((page: WorkspacePage) => {
+    setActivePage(page);
+    if (page !== "editor") {
+      setActivePanel(null);
+    }
+  }, []);
+
   return (
     <TooltipProvider
       delayDuration={150}
@@ -123,23 +131,40 @@ function Workspace() {
       disableHoverableContent
     >
       <WorkspaceShell>
-        <Header />
-        <WorkspaceMain>
-          <WorkspaceColumns>
-            <EditorPane />
-            <PreviewPane
-              activePanel={activePanel}
-              onClose={() => setActivePanel(null)}
+        <Header activePage={activePage} onSelectPage={handleSelectPage} />
+        {activePage === "editor" ? (
+          <>
+            <WorkspaceMain>
+              <WorkspaceColumns>
+                <EditorPane />
+                <PreviewPane
+                  activePanel={activePanel}
+                  onClose={() => setActivePanel(null)}
+                />
+              </WorkspaceColumns>
+            </WorkspaceMain>
+            <FooterBar
+              actions={footerActions}
+              onTogglePanel={handleTogglePanel}
             />
-          </WorkspaceColumns>
-        </WorkspaceMain>
-        <FooterBar actions={footerActions} onTogglePanel={handleTogglePanel} />
+          </>
+        ) : (
+          <WorkspaceMain>
+            <div className="flex flex-1" />
+          </WorkspaceMain>
+        )}
       </WorkspaceShell>
     </TooltipProvider>
   );
 }
 
-function Header() {
+function Header({
+  activePage,
+  onSelectPage,
+}: {
+  activePage: WorkspacePage;
+  onSelectPage: (page: WorkspacePage) => void;
+}) {
   return (
     <WorkspaceHeader>
       <WorkspaceHeaderStack>
@@ -147,9 +172,16 @@ function Header() {
         <WorkspaceHeaderTitle>MESH</WorkspaceHeaderTitle>
       </WorkspaceHeaderStack>
       <WorkspaceHeaderSeparator />
-      <WorkspaceSearchArea>
-        <WorkspaceSearchInput placeholder="Search your sketch" />
-      </WorkspaceSearchArea>
+      <PageMenu
+        pages={[
+          { id: "editor", label: "Editor" },
+          { id: "archive", label: "Archive" },
+          { id: "about", label: "About" },
+        ]}
+        activePage={activePage}
+        onSelect={onSelectPage}
+        aria-label="Primary pages"
+      />
     </WorkspaceHeader>
   );
 }
