@@ -1,0 +1,43 @@
+# Node dependencies
+node_modules/
+.pnpm-store/
+.npm/
+.yarn/
+bun.lockb
+
+# Build output
+.next/
+out/
+dist/
+
+# Environment files (keep secrets local)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# Editor junk
+.DS_Store
+*.swp
+*.swo
+.idea/
+.vscode/
+*.iml
+
+# OS-specific
+Thumbs.db
+
+# Coverage / testing
+coverage/
+*.lcov
+
+# Misc
+.vercel/

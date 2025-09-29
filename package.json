@@ -1,0 +1,27 @@
+{
+  "name": "p5js-mini-editor",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm install && next dev",
+    "build": "pnpm install && next build",
+    "start": "pnpm install && next build && next start"
+  },
+  "dependencies": {
+    "next": "14.2.5",
+    "p5": "1.9.3",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "24.5.2",
+    "@types/react": "19.1.15",
+    "autoprefixer": "10.4.20",
+    "postcss": "8.4.47",
+    "tailwindcss": "3.4.10",
+    "typescript": "5.5.4"
+  },
+  "volta": {
+    "node": "22.20.0"
+  }
+}
