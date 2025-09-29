@@ -157,15 +157,7 @@ function Header() {
 function EditorPane() {
   return (
     <WorkspacePane size="editor">
-      <WorkspacePaneCard>
-        <WorkspacePaneCardHeader
-          title="sketch.js"
-          meta={<Badge variant="outline">Autosave</Badge>}
-        />
-        <WorkspacePaneCardContent>
-          <Editor />
-        </WorkspacePaneCardContent>
-      </WorkspacePaneCard>
+      <Editor />
     </WorkspacePane>
   );
 }
