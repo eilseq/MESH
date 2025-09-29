@@ -36,6 +36,7 @@ import {
 import { PageMenu } from "@/components/PageMenu";
 import { EditorProvider, useEditor } from "@/context/EditorContext";
 import { Play, Share2, Square, Terminal, X, Zap } from "lucide-react";
+import AboutPage from "@/components/AboutPage";
 
 export default function Page() {
   return (
@@ -150,8 +151,12 @@ function Workspace() {
             />
           </>
         ) : (
-          <WorkspaceMain>
-            <div className="flex flex-1" />
+          <WorkspaceMain className="overflow-y-auto">
+            {activePage === "about" ? (
+              <AboutPage />
+            ) : (
+              <div className="flex flex-1" />
+            )}
           </WorkspaceMain>
         )}
       </WorkspaceShell>
