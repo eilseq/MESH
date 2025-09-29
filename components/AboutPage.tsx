@@ -4,7 +4,10 @@ import { Badge } from "@/components/ui/badge";
 
 export default function AboutPage() {
   return (
-    <section className="mx-auto w-full max-w-3xl space-y-8 px-6 py-12 text-sm md:text-base">
+    <section
+      id="about"
+      className="mx-auto w-full max-w-3xl space-y-8 px-6 py-12 text-sm md:text-base"
+    >
       <div className="space-y-3 md:space-y-4">
         <Badge
           variant="secondary"

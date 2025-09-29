@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import Editor from "@/components/Editor";
 import Canvas from "@/components/Canvas";
@@ -111,7 +111,9 @@ function Workspace() {
       {
         id: "share",
         label:
-          activePanel === "share" ? "Hide Bluesky tools" : "Open Bluesky tools",
+          activePanel === "share"
+            ? "Hide publishing tools"
+            : "Open publishing tools",
         icon: Share2,
         toggle: "share",
         active: activePanel === "share",
@@ -125,6 +127,35 @@ function Workspace() {
     if (page !== "editor") {
       setActivePanel(null);
     }
+    if (typeof window !== "undefined") {
+      const hash = page === "editor" ? "" : `#${page}`;
+      const baseUrl = `${window.location.pathname}${window.location.search}`;
+      const nextUrl = hash ? `${baseUrl}${hash}` : baseUrl;
+      window.history.replaceState(null, "", nextUrl);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const syncFromHash = () => {
+      const hash = window.location.hash;
+      if (hash === "#about") {
+        setActivePage("about");
+        setActivePanel(null);
+      } else if (hash === "#archive") {
+        setActivePage("archive");
+        setActivePanel(null);
+      } else if (!hash || hash === "#editor") {
+        setActivePage("editor");
+      }
+    };
+
+    syncFromHash();
+    window.addEventListener("hashchange", syncFromHash);
+    return () => window.removeEventListener("hashchange", syncFromHash);
   }, []);
 
   return (
@@ -153,11 +184,7 @@ function Workspace() {
           </>
         ) : (
           <WorkspaceMain className="overflow-y-auto">
-            {activePage === "about" ? (
-              <AboutPage />
-            ) : (
-              <ArchivePage />
-            )}
+            {activePage === "about" ? <AboutPage /> : <ArchivePage />}
           </WorkspaceMain>
         )}
       </WorkspaceShell>
@@ -214,7 +241,7 @@ function PreviewPane({
       {activePanel && (
         <WorkspaceDock>
           <WorkspaceDockHeader
-            title={activePanel === "console" ? "Console" : "Bluesky Tools"}
+            title={activePanel === "console" ? "Console" : "Publishing Tools"}
             action={
               <Button
                 size="icon"

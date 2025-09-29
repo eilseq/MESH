@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-const HASHTAG_QUERY = "#art";
+const HASHTAG_QUERY = "#meshArchive";
 const DEFAULT_LIMIT = 30;
 const MAX_LIMIT = 50;
 
