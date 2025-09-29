@@ -23,7 +23,7 @@ export default function BlueskyPost() {
   const { canvas } = useEditor();
   const [handle, setHandle] = useState("");
   const [password, setPassword] = useState("");
-  const [caption, setCaption] = useState("p5.js sketch snapshot");
+  const [caption, setCaption] = useState("");
   const [status, setStatus] = useState("");
 
   async function post() {
@@ -47,12 +47,8 @@ export default function BlueskyPost() {
 
   return (
     <DockPanel>
-      <DockPanelHeader
-        title="Post to Bluesky"
-        description="Share a canvas snapshot directly to your Bluesky feed."
-      />
       <DockPanelContent>
-        <DockForm>
+        <DockForm className="flex flex-col justify-between p-1">
           <DockFormGrid>
             <DockFormField>
               <Label htmlFor="bluesky-handle">Handle</Label>
@@ -76,13 +72,14 @@ export default function BlueskyPost() {
               />
             </DockFormField>
           </DockFormGrid>
-          <DockFormField>
+          <DockFormField className="h-60">
             <Label htmlFor="bluesky-caption">Caption</Label>
             <Textarea
               id="bluesky-caption"
+              className="rounded-lg border h-60"
               value={caption}
               onChange={(e) => setCaption(e.target.value)}
-              placeholder="p5.js sketch snapshot"
+              placeholder="Post on Bluesky with caption using the tag #meshArchive to submit artwork..."
               rows={3}
             />
           </DockFormField>
@@ -91,8 +88,8 @@ export default function BlueskyPost() {
             <DockFormStatus>{status || ""}</DockFormStatus>
           </DockFormFooter>
           <DockFormNote>
-            Use a Bluesky <strong>App Password</strong>, not your main account password. Credentials are
-            never stored.
+            Use a Bluesky <strong>App Password</strong>, not your main account
+            password. Credentials are never stored.
           </DockFormNote>
         </DockForm>
       </DockPanelContent>

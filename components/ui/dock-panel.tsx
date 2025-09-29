@@ -9,7 +9,10 @@ const DockPanel = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("flex h-full min-h-[220px] flex-col gap-5", className)}
+    className={cn(
+      "flex h-full w-full min-h-[220px] flex-1 flex-col gap-5",
+      className
+    )}
     {...props}
   />
 ));

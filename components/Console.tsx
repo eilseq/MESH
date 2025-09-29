@@ -16,18 +16,12 @@ export default function Console() {
 
   return (
     <DockPanel>
-      <DockPanelHeader
-        title="Console Output"
-        description="Logs emitted from your sketch runtime."
-        action={
-          <Button size="sm" variant="outline" onClick={clearLogs}>
-            Clear
-          </Button>
-        }
-      />
+      <Button size="sm" variant="outline" onClick={clearLogs}>
+        Clear
+      </Button>
       <DockPanelContent>
         <DockScrollArea>
-          <DockLogOutput value={output} />
+          <DockLogOutput value={output} className="overflow-scroll" />
         </DockScrollArea>
       </DockPanelContent>
     </DockPanel>

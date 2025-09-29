@@ -143,8 +143,8 @@ function Header() {
   return (
     <WorkspaceHeader>
       <WorkspaceHeaderStack>
-        <WorkspaceHeaderMeta>p5.js mini editor</WorkspaceHeaderMeta>
-        <WorkspaceHeaderTitle>Focus Mode Workspace</WorkspaceHeaderTitle>
+        <WorkspaceHeaderMeta>Creative Coding Zine</WorkspaceHeaderMeta>
+        <WorkspaceHeaderTitle>MESH</WorkspaceHeaderTitle>
       </WorkspaceHeaderStack>
       <WorkspaceHeaderSeparator />
       <WorkspaceSearchArea>
