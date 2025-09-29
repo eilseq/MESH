@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-const HASHTAG_QUERY = "#meshArchive";
+const HASHTAG_QUERY = "#art";
 const DEFAULT_LIMIT = 30;
 const MAX_LIMIT = 50;
 
@@ -12,8 +12,7 @@ const LEXICON_ENDPOINTS = [
   "https://public.api.bsky.app/xrpc/app.bsky.feed.searchPosts",
 ] as const;
 
-const SEARCH_API_ENDPOINT =
-  "https://search.bsky.social/api/v1/search/posts";
+const SEARCH_API_ENDPOINT = "https://search.bsky.social/api/v1/search/posts";
 
 const COMMON_HEADERS = {
   Accept: "application/json",
@@ -178,9 +177,7 @@ export async function GET(request: Request) {
         errors.push({
           status: 502,
           body:
-            error instanceof Error
-              ? error.message
-              : "Unknown provider failure",
+            error instanceof Error ? error.message : "Unknown provider failure",
           provider: provider.name,
         });
         break;
@@ -199,7 +196,8 @@ export async function GET(request: Request) {
 
 function extractPostFromSearchHit(hit: unknown): BlueskyPostView | null {
   if (!hit || typeof hit !== "object") return null;
-  const value = (hit as Record<string, unknown>).post ??
+  const value =
+    (hit as Record<string, unknown>).post ??
     (hit as Record<string, unknown>).value ??
     hit;
   return isBlueskyPostView(value) ? value : null;
@@ -208,11 +206,13 @@ function extractPostFromSearchHit(hit: unknown): BlueskyPostView | null {
 function isBlueskyPostView(value: unknown): value is BlueskyPostView {
   if (!value || typeof value !== "object") return false;
   const data = value as Record<string, unknown>;
-  if (typeof data.uri !== "string" || typeof data.cid !== "string") return false;
+  if (typeof data.uri !== "string" || typeof data.cid !== "string")
+    return false;
 
   const author = data.author;
   if (!author || typeof author !== "object") return false;
-  if (typeof (author as Record<string, unknown>).handle !== "string") return false;
+  if (typeof (author as Record<string, unknown>).handle !== "string")
+    return false;
 
   const record = data.record;
   if (!record || typeof record !== "object") return false;
@@ -269,7 +269,8 @@ async function ensureSession(): Promise<BlueskySession> {
   };
 
   const ttl = data.expiresAt ? Date.parse(data.expiresAt) - Date.now() : null;
-  const expiresAt = Date.now() + (ttl && Number.isFinite(ttl) ? ttl : 1000 * 60 * 30);
+  const expiresAt =
+    Date.now() + (ttl && Number.isFinite(ttl) ? ttl : 1000 * 60 * 30);
 
   sessionCache = {
     accessJwt: data.accessJwt,
@@ -296,10 +297,13 @@ async function safeReadText(response: Response) {
   }
 }
 
-function formatErrorDetails(errors: { status: number; body: string; provider: string }[]) {
+function formatErrorDetails(
+  errors: { status: number; body: string; provider: string }[]
+) {
   return errors
-    .map(({ status, body, provider }) =>
-      `provider=${provider}; status=${status}; body=${truncate(body, 200)}`
+    .map(
+      ({ status, body, provider }) =>
+        `provider=${provider}; status=${status}; body=${truncate(body, 200)}`
     )
     .join(" | ");
 }

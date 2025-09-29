@@ -28,17 +28,14 @@ type BlueskyImage = {
   alt?: string;
 };
 
-type BlueskyImageEmbed = {
-  $type: "app.bsky.embed.images";
-  images: BlueskyImage[];
-};
+type BlueskyEmbed = (Record<string, unknown> & { $type?: string }) | null;
 
 type BlueskyPostView = {
   uri: string;
   cid: string;
   author: BlueskyAuthor;
   record: BlueskyRecord;
-  embed?: { $type: string } | BlueskyImageEmbed;
+  embed?: BlueskyEmbed;
   indexedAt?: string;
 };
 
@@ -328,24 +325,100 @@ function Avatar({ author }: { author: BlueskyAuthor }) {
   );
 }
 
-function extractImages(embed: BlueskyPostView["embed"]) {
+function extractImages(embed: BlueskyEmbed) {
   if (!embed) return [] as BlueskyImage[];
+
   if (isImageEmbed(embed)) {
-    return embed.images.filter((img) => Boolean(img.fullsize || img.thumb));
+    return embed.images.filter((img) => Boolean(img?.fullsize || img?.thumb));
   }
+
+  if (isRecordWithMediaEmbed(embed)) {
+    return extractImages(embed.media);
+  }
+
+  if (isRecordEmbed(embed)) {
+    const nested =
+      extractNestedEmbed(embed.record) ||
+      extractNestedEmbed(embed.embeddedRecord) ||
+      extractNestedEmbed((embed as Record<string, unknown>).quotedRecord);
+    if (nested) return extractImages(nested);
+  }
+
+  if (isExternalEmbed(embed)) {
+    const thumb = typeof embed.thumb === "string" ? embed.thumb : undefined;
+    if (thumb) {
+      return [
+        {
+          thumb,
+          fullsize: thumb,
+          alt:
+            (typeof embed.title === "string" && embed.title) ||
+            (typeof embed.description === "string" && embed.description) ||
+            "External link preview",
+        },
+      ];
+    }
+  }
+
   return [] as BlueskyImage[];
 }
 
-function isImageEmbed(
-  embed: BlueskyPostView["embed"]
-): embed is BlueskyImageEmbed {
+function isImageEmbed(embed: BlueskyEmbed): embed is BlueskyEmbed & {
+  images: BlueskyImage[];
+} {
   if (!embed || typeof embed !== "object") return false;
-  if (!("$type" in embed) || embed.$type !== "app.bsky.embed.images") {
-    return false;
+  const type = typeof embed.$type === "string" ? embed.$type : "";
+  if (!type.startsWith("app.bsky.embed.images")) return false;
+  const images = (embed as { images?: unknown }).images;
+  return Array.isArray(images);
+}
+
+function isRecordWithMediaEmbed(embed: BlueskyEmbed): embed is BlueskyEmbed & {
+  media: BlueskyEmbed;
+} {
+  if (!embed || typeof embed !== "object") return false;
+  const type = typeof embed.$type === "string" ? embed.$type : "";
+  if (!type.startsWith("app.bsky.embed.recordWithMedia")) return false;
+  const media = (embed as { media?: unknown }).media;
+  return typeof media === "object" && media !== null;
+}
+
+function isRecordEmbed(embed: BlueskyEmbed): embed is BlueskyEmbed {
+  if (!embed || typeof embed !== "object") return false;
+  const type = typeof embed.$type === "string" ? embed.$type : "";
+  return type.startsWith("app.bsky.embed.record");
+}
+
+function isExternalEmbed(embed: BlueskyEmbed): embed is BlueskyEmbed & {
+  thumb?: string;
+  title?: string;
+  description?: string;
+} {
+  if (!embed || typeof embed !== "object") return false;
+  const type = typeof embed.$type === "string" ? embed.$type : "";
+  return type.startsWith("app.bsky.embed.external") && "thumb" in embed;
+}
+
+function extractNestedEmbed(value: unknown): BlueskyEmbed | null {
+  if (!value || typeof value !== "object") return null;
+  const record = value as Record<string, unknown>;
+
+  if (record.embed && typeof record.embed === "object") {
+    return record.embed as BlueskyEmbed;
   }
-  if (!("images" in embed)) return false;
-  const maybeImages = (embed as { images?: unknown }).images;
-  return Array.isArray(maybeImages);
+
+  if (record.value && typeof record.value === "object") {
+    const nestedValue = record.value as Record<string, unknown>;
+    if (nestedValue.embed && typeof nestedValue.embed === "object") {
+      return nestedValue.embed as BlueskyEmbed;
+    }
+  }
+
+  if (record.record && typeof record.record === "object") {
+    return extractNestedEmbed(record.record);
+  }
+
+  return null;
 }
 
 function buildPostUrl(post: BlueskyPostView) {
