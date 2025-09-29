@@ -3,6 +3,7 @@
 import { useRef, useEffect } from "react";
 import { useEditor } from "@/context/EditorContext";
 import { useP5 } from "@/hooks/useP5";
+import { CanvasFrame } from "@/components/ui/canvas-frame";
 
 export default function Canvas() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -22,10 +23,5 @@ export default function Canvas() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return (
-    <div
-      ref={containerRef}
-      className="flex min-h-[320px] items-center justify-center overflow-hidden rounded-lg border bg-black"
-    />
-  );
+  return <CanvasFrame ref={containerRef} />;
 }

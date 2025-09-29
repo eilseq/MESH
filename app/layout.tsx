@@ -3,6 +3,7 @@ import "./globals.css";
 import { Inter, JetBrains_Mono } from "next/font/google";
 
 import { cn } from "@/lib/utils";
+import { appBodyClass } from "@/components/ui/app-body";
 
 export const metadata = {
   title: "p5.js Mini Editor",
@@ -19,13 +20,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={cn(
-          "min-h-screen bg-background text-foreground font-sans antialiased",
-          fontSans.variable,
-          fontMono.variable
-        )}
-      >
+      <body className={cn(appBodyClass, fontSans.variable, fontMono.variable)}>
         {children}
       </body>
     </html>

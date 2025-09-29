@@ -25,17 +25,53 @@ export class P5Runner {
 
   /** Wrap user code to behave like "global mode" inside instance mode. */
   private buildSketchFactory(code: string): (p: any) => void {
+    const lifecycleFns = [
+      "preload",
+      "setup",
+      "draw",
+      "mouseClicked",
+      "mousePressed",
+      "mouseReleased",
+      "mouseMoved",
+      "mouseDragged",
+      "mouseWheel",
+      "doubleClicked",
+      "keyPressed",
+      "keyReleased",
+      "keyTyped",
+      "touchStarted",
+      "touchMoved",
+      "touchEnded",
+      "deviceMoved",
+      "deviceTurned",
+      "deviceShaken",
+      "windowResized",
+    ];
+
+    const declarations = lifecycleFns
+      .map((name) => `let __${name} = null;`)
+      .join("\n");
+    const captures = lifecycleFns
+      .map(
+        (name) => `if (typeof ${name} === 'function') __${name} = ${name};`
+      )
+      .join("\n");
+    const assignments = lifecycleFns
+      .map(
+        (name) =>
+          `if (__${name}) { p.${name} = __${name}; } else { delete p.${name}; }`
+      )
+      .join("\n");
+
     const wrapped = `
       return function(p){
         with(p){
-          let __setup = null, __draw = null;
+          ${declarations}
           (function(){
             ${code}
-            if (typeof setup === 'function') __setup = setup;
-            if (typeof draw === 'function') __draw = draw;
+            ${captures}
           })();
-          if (__setup) p.setup = __setup;
-          if (__draw) p.draw = __draw;
+          ${assignments}
         }
       }
     `;

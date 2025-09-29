@@ -2,12 +2,22 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useEditor } from "@/context/EditorContext";
 import { BlueskyClient } from "@/lib/bluesky";
+import {
+  DockPanel,
+  DockPanelHeader,
+  DockPanelContent,
+  DockForm,
+  DockFormGrid,
+  DockFormField,
+  DockFormFooter,
+  DockFormStatus,
+  DockFormNote,
+} from "@/components/ui/dock-panel";
 
 export default function BlueskyPost() {
   const { canvas } = useEditor();
@@ -36,60 +46,56 @@ export default function BlueskyPost() {
   }
 
   return (
-    <Card>
-      <CardHeader className="pb-4">
-        <CardTitle className="text-base">Post to Bluesky</CardTitle>
-        <CardDescription>Share a canvas snapshot directly to your Bluesky feed.</CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="grid gap-4 sm:grid-cols-2">
-          <div className="space-y-2">
-            <Label htmlFor="bluesky-handle">Handle</Label>
-            <Input
-              id="bluesky-handle"
-              value={handle}
-              onChange={(e) => setHandle(e.target.value)}
-              placeholder="user.bsky.social"
-              autoComplete="username"
+    <DockPanel>
+      <DockPanelHeader
+        title="Post to Bluesky"
+        description="Share a canvas snapshot directly to your Bluesky feed."
+      />
+      <DockPanelContent>
+        <DockForm>
+          <DockFormGrid>
+            <DockFormField>
+              <Label htmlFor="bluesky-handle">Handle</Label>
+              <Input
+                id="bluesky-handle"
+                value={handle}
+                onChange={(e) => setHandle(e.target.value)}
+                placeholder="user.bsky.social"
+                autoComplete="username"
+              />
+            </DockFormField>
+            <DockFormField>
+              <Label htmlFor="bluesky-password">App password</Label>
+              <Input
+                id="bluesky-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="xxxx-xxxx-xxxx-xxxx"
+                type="password"
+                autoComplete="current-password"
+              />
+            </DockFormField>
+          </DockFormGrid>
+          <DockFormField>
+            <Label htmlFor="bluesky-caption">Caption</Label>
+            <Textarea
+              id="bluesky-caption"
+              value={caption}
+              onChange={(e) => setCaption(e.target.value)}
+              placeholder="p5.js sketch snapshot"
+              rows={3}
             />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="bluesky-password">App password</Label>
-            <Input
-              id="bluesky-password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="xxxx-xxxx-xxxx-xxxx"
-              type="password"
-              autoComplete="current-password"
-            />
-          </div>
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="bluesky-caption">Caption</Label>
-          <Textarea
-            id="bluesky-caption"
-            value={caption}
-            onChange={(e) => setCaption(e.target.value)}
-            placeholder="p5.js sketch snapshot"
-            rows={2}
-          />
-        </div>
-      </CardContent>
-      <CardFooter className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <Button onClick={post} className="w-full sm:w-auto">
-          Post Canvas Snapshot
-        </Button>
-        <p className="text-xs text-muted-foreground sm:text-right">
-          {status || ""}
-        </p>
-      </CardFooter>
-      <CardContent className="pt-0">
-        <p className="text-[11px] text-muted-foreground">
-          Use a Bluesky <span className="font-medium">App Password</span>, not your main account
-          password. Credentials are never stored.
-        </p>
-      </CardContent>
-    </Card>
+          </DockFormField>
+          <DockFormFooter>
+            <Button onClick={post}>Post Canvas Snapshot</Button>
+            <DockFormStatus>{status || ""}</DockFormStatus>
+          </DockFormFooter>
+          <DockFormNote>
+            Use a Bluesky <strong>App Password</strong>, not your main account password. Credentials are
+            never stored.
+          </DockFormNote>
+        </DockForm>
+      </DockPanelContent>
+    </DockPanel>
   );
 }

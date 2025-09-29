@@ -1,24 +1,35 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { Button } from "@/components/ui/button";
+import {
+  DockPanel,
+  DockPanelHeader,
+  DockPanelContent,
+  DockScrollArea,
+  DockLogOutput,
+} from "@/components/ui/dock-panel";
 import { useEditor } from "@/context/EditorContext";
 
 export default function Console() {
-  const { logs } = useEditor();
+  const { logs, clearLogs } = useEditor();
   const output = logs.length ? logs.join("\n") : "Console ready.";
 
   return (
-    <Card>
-      <CardHeader className="pb-4">
-        <CardTitle className="text-base">Console</CardTitle>
-        <CardDescription>Logs emitted from your sketch runtime.</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <ScrollArea className="h-40 rounded-md border bg-muted/40 p-3 text-xs text-muted-foreground">
-          <pre className="whitespace-pre-wrap font-mono leading-relaxed">{output}</pre>
-        </ScrollArea>
-      </CardContent>
-    </Card>
+    <DockPanel>
+      <DockPanelHeader
+        title="Console Output"
+        description="Logs emitted from your sketch runtime."
+        action={
+          <Button size="sm" variant="outline" onClick={clearLogs}>
+            Clear
+          </Button>
+        }
+      />
+      <DockPanelContent>
+        <DockScrollArea>
+          <DockLogOutput value={output} />
+        </DockScrollArea>
+      </DockPanelContent>
+    </DockPanel>
   );
 }
