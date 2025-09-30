@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useId, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Editor as MonacoEditor } from "@monaco-editor/react";
 
 import { FieldStack } from "@/components/ui/field";

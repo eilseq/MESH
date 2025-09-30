@@ -20,7 +20,6 @@ export default function Canvas() {
   useEffect(() => {
     clearLogs();
     registerControls({ run: api.run, stop: api.stop });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return <CanvasFrame ref={containerRef} />;

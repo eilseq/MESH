@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "pnpm install && next dev",
     "build": "next build",
-    "start": "next build && next start"
+    "start": "next build && next start",
+    "lint": "next lint"
   },
   "dependencies": {
     "@monaco-editor/react": "^4.7.0",
@@ -24,9 +25,17 @@
     "tailwind-merge": "2.6.0"
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
     "@types/node": "24.5.2",
     "@types/react": "19.1.15",
     "autoprefixer": "10.4.20",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "14.2.5",
+    "eslint-plugin-react": "^7.37.5",
+    "husky": "^9.1.7",
+    "jiti": "^2.6.0",
+    "lint-staged": "^16.2.3",
     "postcss": "8.4.47",
     "tailwindcss": "3.4.10",
     "tailwindcss-animate": "1.0.7",
@@ -34,5 +43,8 @@
   },
   "volta": {
     "node": "22.20.0"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": "next lint --fix --file"
   }
 }

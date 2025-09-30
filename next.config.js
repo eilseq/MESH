@@ -4,6 +4,10 @@ const path = require("path");
 const nextConfig = {
   // Disable React strict mode to avoid p5 sketches executing twice in dev
   reactStrictMode: false,
+  eslint: {
+    // Fail production builds if lint errors are found
+    ignoreDuringBuilds: false,
+  },
   webpack: (config) => {
     const alias = {
       "@": path.resolve(__dirname),

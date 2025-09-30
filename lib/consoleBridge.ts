@@ -8,7 +8,7 @@ export function hijackConsole(onLog: LogFn) {
     onerror: window.onerror,
   };
 
-  function stringify(args: any[]) {
+  function stringify(args: unknown[]) {
     return args
       .map((a) => {
         try {
@@ -20,15 +20,15 @@ export function hijackConsole(onLog: LogFn) {
       .join(" ");
   }
 
-  console.log = (...a: any[]) => {
+  console.log = (...a: unknown[]) => {
     onLog(`[log] ${stringify(a)}`);
     orig.log(...a);
   };
-  console.warn = (...a: any[]) => {
+  console.warn = (...a: unknown[]) => {
     onLog(`[warn] ${stringify(a)}`);
     orig.warn(...a);
   };
-  console.error = (...a: any[]) => {
+  console.error = (...a: unknown[]) => {
     onLog(`[error] ${stringify(a)}`);
     orig.error(...a);
   };

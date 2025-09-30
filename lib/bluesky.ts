@@ -4,7 +4,7 @@ export type BlueskySession = { accessJwt: string; did: string };
 
 export class BlueskyClient {
   private session: BlueskySession | null = null;
-  private static HASHTAG_REGEX = /#[A-Za-z0-9_]+/g;
+  static readonly HASHTAG_REGEX = /#[A-Za-z0-9_]+/g;
 
   async login(identifier: string, password: string): Promise<BlueskySession> {
     const r = await fetch(
@@ -40,7 +40,7 @@ export class BlueskyClient {
     return r.json(); // { blob: { $type, ref, mimeType, size } }
   }
 
-  async createPost(did: string, record: any) {
+  async createPost(did: string, record: Record<string, unknown>) {
     const { accessJwt } = this.requireSession();
     const r = await fetch(
       "https://bsky.social/xrpc/com.atproto.repo.createRecord",

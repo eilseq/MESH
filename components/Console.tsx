@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button";
 import {
   DockPanel,
-  DockPanelHeader,
   DockPanelContent,
   DockScrollArea,
   DockLogOutput,
@@ -21,7 +20,7 @@ export default function Console() {
       </Button>
       <DockPanelContent>
         <DockScrollArea>
-          <DockLogOutput value={output} className="overflow-scroll" />
+          <DockLogOutput value={output} />
         </DockScrollArea>
       </DockPanelContent>
     </DockPanel>

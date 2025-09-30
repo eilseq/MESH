@@ -73,10 +73,16 @@ DockScrollArea.displayName = "DockScrollArea";
 
 interface DockLogOutputProps {
   value: string;
+  className?: string;
 }
 
-const DockLogOutput = ({ value }: DockLogOutputProps) => (
-  <pre className="whitespace-pre-wrap font-mono text-[13px] leading-relaxed">
+const DockLogOutput = ({ value, className }: DockLogOutputProps) => (
+  <pre
+    className={cn(
+      "whitespace-pre-wrap font-mono text-[13px] leading-relaxed overflow-scroll",
+      className
+    )}
+  >
     {value}
   </pre>
 );

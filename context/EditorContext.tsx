@@ -223,7 +223,15 @@ type Actions = {
 
 const EditorCtx = createContext<(State & Actions) | null>(null);
 
-function reducer(state: State, action: any): State {
+type Action =
+  | { type: "SET_CODE"; code: string }
+  | { type: "TOGGLE_AUTORUN" }
+  | { type: "APPEND_LOG"; line: string }
+  | { type: "CLEAR_LOGS" }
+  | { type: "SET_CANVAS"; canvas: HTMLCanvasElement | null }
+  | { type: "REGISTER"; api: { run: () => Promise<void>; stop: () => void } };
+
+function reducer(state: State, action: Action): State {
   switch (action.type) {
     case "SET_CODE":
       return { ...state, code: action.code };

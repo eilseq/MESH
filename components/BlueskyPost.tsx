@@ -80,7 +80,7 @@ export default function BlueskyPost() {
       }
       setStatus("🔑 Logging in…");
       const client = new BlueskyClient();
-      const { did } = await client.login(handle.trim(), password.trim());
+      await client.login(handle.trim(), password.trim());
 
       setStatus("⬆️ Uploading & posting…");
       const captionToPost = includeLicense
@@ -89,8 +89,9 @@ export default function BlueskyPost() {
       await client.postImageFromCanvas(canvasFromDom, captionToPost);
 
       setStatus("✅ Posted to Bluesky!");
-    } catch (e: any) {
-      setStatus(`❌ ${e?.message || e}`);
+    } catch (e: unknown) {
+      const message = e instanceof Error ? e.message : String(e);
+      setStatus(`❌ ${message}`);
     }
   }
 
