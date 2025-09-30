@@ -34,7 +34,7 @@ const WorkspaceHeader = React.forwardRef<
     className={cn("flex-shrink-0 border-b bg-card/80 backdrop-blur", className)}
     {...props}
   >
-    <div className="mx-auto flex w-full max-w-[1600px] flex-wrap items-center gap-4 px-6 py-4">
+    <div className="flex w-full flex-wrap items-center gap-4 px-6 py-4">
       {children}
     </div>
   </header>
@@ -308,7 +308,7 @@ const WorkspaceFooter = React.forwardRef<
     className={cn("flex-shrink-0 border-t bg-card", className)}
     {...props}
   >
-    <div className="mx-auto flex w-full max-w-[1600px] items-center gap-2 px-4 py-3">
+    <div className="flex w-full items-center gap-2 px-4 py-3">
       {children}
     </div>
   </footer>
