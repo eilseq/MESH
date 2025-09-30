@@ -60,7 +60,7 @@ export default function AboutPage() {
       <div className="rounded-xl border bg-muted/20 p-6 shadow-sm">
         <h2 className="text-lg font-semibold">Archive in motion</h2>
         <p className="text-muted-foreground">
-          Finished sketches and happy accidents alike can be published straight
+          Finished sketches and happy accidents alike can be published directly
           to Bluesky. Tag your post with{" "}
           <span className="font-mono text-xs uppercase tracking-wide">
             #meshArchive

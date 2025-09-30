@@ -253,7 +253,7 @@ const WorkspaceDock = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      "flex min-h-[440px] flex-col overflow-hidden border bg-card",
+      "flex min-h-[390px] flex-col overflow-hidden border bg-card",
       className
     )}
     {...props}

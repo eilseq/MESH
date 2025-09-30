@@ -115,14 +115,14 @@ export default function BlueskyPost() {
               />
             </DockFormField>
           </DockFormGrid>
-          <DockFormField className="h-60">
+          <DockFormField className="h-40">
             <Label htmlFor="bluesky-caption">Caption</Label>
             <Textarea
               id="bluesky-caption"
               className="rounded-lg border h-60"
               value={caption}
               onChange={handleCaptionChange}
-              placeholder="Post on Bluesky with caption using the tag #meshArchive to submit artwork..."
+              placeholder="Post on Bluesky with caption using the tag #meshArchive to see you artwork in the public archive..."
               rows={3}
             />
           </DockFormField>
@@ -140,7 +140,7 @@ export default function BlueskyPost() {
                   htmlFor="bluesky-license-toggle"
                   className="text-xs sm:text-sm font-normal leading-tight text-muted-foreground"
                 >
-                  Add{" "}
+                  By clicking this I apply{" "}
                   <Link
                     href="https://creativecommons.org/licenses/by-sa/4.0/"
                     className="underline hover:text-primary"
@@ -149,10 +149,14 @@ export default function BlueskyPost() {
                   >
                     CC-BY-SA
                   </Link>{" "}
-                  license to apply for{" "}
+                  license to my work and I submit it for publication in the{" "}
                   <Link href="#about" className="underline hover:text-primary">
                     MESH Zine
                   </Link>
+                  . Doing so, I ensure that all assets used for the creation of
+                  this work are under compatible CC-Commercial licenses, and I
+                  have added necessary attributions in the artwork caption
+                  before publishing.
                 </Label>
               </div>
             </div>

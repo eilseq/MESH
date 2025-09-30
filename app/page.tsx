@@ -253,7 +253,7 @@ function PreviewPane({
               </Button>
             }
           />
-          <WorkspaceDockContent>
+          <WorkspaceDockContent className="h-20">
             {activePanel === "console" ? <Console /> : <BlueskyPost />}
           </WorkspaceDockContent>
         </WorkspaceDock>
