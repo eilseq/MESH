@@ -4,6 +4,7 @@ export type BlueskySession = { accessJwt: string; did: string };
 
 export class BlueskyClient {
   private session: BlueskySession | null = null;
+  private static HASHTAG_REGEX = /#[A-Za-z0-9_]+/g;
 
   async login(identifier: string, password: string): Promise<BlueskySession> {
     const r = await fetch(
@@ -74,6 +75,7 @@ export class BlueskyClient {
       $type: "app.bsky.feed.post",
       createdAt: new Date().toISOString(),
       text,
+      ...buildFacetField(text),
       embed: {
         $type: "app.bsky.embed.images",
         images: [{ image: uploaded, alt: "Canvas snapshot" }],
@@ -82,4 +84,46 @@ export class BlueskyClient {
 
     return this.createPost(did, record);
   }
+}
+
+function buildFacetField(text: string) {
+  const facets = buildHashtagFacets(text);
+  return facets.length > 0 ? { facets } : {};
+}
+
+function buildHashtagFacets(text: string) {
+  const matches = Array.from(text.matchAll(BlueskyClient.HASHTAG_REGEX));
+  if (matches.length === 0) return [];
+
+  const encoder = new TextEncoder();
+
+  return matches
+    .map((match) => {
+      const hashtag = match[0];
+      const tag = hashtag.slice(1);
+      if (!tag) return null;
+
+      const textBefore = text.slice(0, match.index);
+      const byteStart = encoder.encode(textBefore).length;
+      const byteEnd = byteStart + encoder.encode(hashtag).length;
+
+      return {
+        $type: "app.bsky.richtext.facet",
+        features: [
+          {
+            $type: "app.bsky.richtext.facet#tag",
+            tag,
+          },
+        ],
+        index: {
+          byteStart,
+          byteEnd,
+        },
+      };
+    })
+    .filter((value): value is {
+      $type: "app.bsky.richtext.facet";
+      features: { $type: string; tag: string }[];
+      index: { byteStart: number; byteEnd: number };
+    } => value !== null);
 }
