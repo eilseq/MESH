@@ -61,10 +61,7 @@ export class BlueskyClient {
     return r.json();
   }
 
-  async postImageFromCanvas(
-    canvas: HTMLCanvasElement,
-    text = "p5.js sketch snapshot"
-  ) {
+  async postImageFromCanvas(canvas: HTMLCanvasElement, text = "MESH Archive") {
     const blob: Blob = await new Promise((res) =>
       canvas.toBlob((b) => res(b!), "image/png")
     );
@@ -78,7 +75,7 @@ export class BlueskyClient {
       ...buildFacetField(text),
       embed: {
         $type: "app.bsky.embed.images",
-        images: [{ image: uploaded, alt: "Canvas snapshot" }],
+        images: [{ image: uploaded, alt: "MESH Archive" }],
       },
     };
 
@@ -121,9 +118,13 @@ function buildHashtagFacets(text: string) {
         },
       };
     })
-    .filter((value): value is {
-      $type: "app.bsky.richtext.facet";
-      features: { $type: string; tag: string }[];
-      index: { byteStart: number; byteEnd: number };
-    } => value !== null);
+    .filter(
+      (
+        value
+      ): value is {
+        $type: "app.bsky.richtext.facet";
+        features: { $type: string; tag: string }[];
+        index: { byteStart: number; byteEnd: number };
+      } => value !== null
+    );
 }
