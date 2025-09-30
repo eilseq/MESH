@@ -75,14 +75,14 @@ export default function BlueskyPost() {
           : null);
 
       if (!canvasFromDom) {
-        setStatus("❌ No canvas to capture.");
+        setStatus("❌ No canvas");
         return;
       }
       setStatus("🔑 Logging in…");
       const client = new BlueskyClient();
       await client.login(handle.trim(), password.trim());
 
-      setStatus("⬆️ Uploading & posting…");
+      setStatus("⬆️ Posting…");
       const captionToPost = includeLicense
         ? ensureLicenseSuffix(caption)
         : caption;
@@ -122,11 +122,11 @@ export default function BlueskyPost() {
               />
             </DockFormField>
           </DockFormGrid>
-          <DockFormField className="h-40">
+          <DockFormField>
             <Label htmlFor="bluesky-caption">Caption</Label>
             <Textarea
               id="bluesky-caption"
-              className="rounded-lg border h-60"
+              className="rounded-lg border"
               value={caption}
               onChange={handleCaptionChange}
               placeholder="Post on Bluesky with caption using the tag #meshArchive to see you artwork in the public archive..."
@@ -136,7 +136,7 @@ export default function BlueskyPost() {
           <DockFormFooter>
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
               <Button onClick={post}>Publish</Button>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-4">
                 <Switch
                   id="bluesky-license-toggle"
                   checked={includeLicense}
@@ -145,7 +145,7 @@ export default function BlueskyPost() {
                 />
                 <Label
                   htmlFor="bluesky-license-toggle"
-                  className="text-xs sm:text-sm font-normal leading-tight text-muted-foreground"
+                  className="text-xs font-normal leading-tight text-muted-foreground"
                 >
                   By clicking this I apply{" "}
                   <Link

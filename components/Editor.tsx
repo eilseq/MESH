@@ -65,7 +65,7 @@ export default function Editor() {
             ariaLabel: "Sketch code editor",
             automaticLayout: true,
             fontFamily: "var(--font-mono)",
-            fontSize: 14,
+            fontSize: 12,
             minimap: { enabled: false },
             scrollBeyondLastLine: false,
             smoothScrolling: true,

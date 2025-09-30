@@ -308,7 +308,7 @@ function FooterBar({
                     aria-pressed={active ? true : undefined}
                     disabled={disabled}
                   >
-                    <Icon size={20} />
+                    <Icon size={18} />
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent side="top">{label}</TooltipContent>

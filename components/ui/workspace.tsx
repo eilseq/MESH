@@ -308,9 +308,7 @@ const WorkspaceFooter = React.forwardRef<
     className={cn("flex-shrink-0 border-t bg-card", className)}
     {...props}
   >
-    <div className="flex w-full items-center gap-2 px-4 py-3">
-      {children}
-    </div>
+    <div className="flex w-full items-center gap-2 px-3 py-2">{children}</div>
   </footer>
 ));
 WorkspaceFooter.displayName = "WorkspaceFooter";
