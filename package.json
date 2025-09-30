@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "pnpm install && next dev",
-    "build": "pnpm install && next build",
-    "start": "pnpm install && next build && next start"
+    "build": "next build",
+    "start": "next build && next start"
   },
   "dependencies": {
     "@monaco-editor/react": "^4.7.0",
