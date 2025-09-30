@@ -62,6 +62,7 @@ type FooterAction = {
 };
 
 function Workspace() {
+  const isLargeScreen = useIsLargeScreen();
   const { run, stop, autoRun, toggleAutoRun } = useEditor();
   const [activePanel, setActivePanel] = useState<PanelKey>(null);
   const [activePage, setActivePage] = useState<WorkspacePage>("editor");
@@ -136,7 +137,14 @@ function Workspace() {
   }, []);
 
   useEffect(() => {
-    if (typeof window === "undefined") {
+    if (isLargeScreen === false) {
+      setActivePanel(null);
+      setActivePage("about");
+    }
+  }, [isLargeScreen]);
+
+  useEffect(() => {
+    if (!isLargeScreen || typeof window === "undefined") {
       return;
     }
 
@@ -156,7 +164,15 @@ function Workspace() {
     syncFromHash();
     window.addEventListener("hashchange", syncFromHash);
     return () => window.removeEventListener("hashchange", syncFromHash);
-  }, []);
+  }, [isLargeScreen]);
+
+  if (isLargeScreen === null) {
+    return null;
+  }
+
+  if (!isLargeScreen) {
+    return <MobileAboutView />;
+  }
 
   return (
     <TooltipProvider
@@ -313,4 +329,56 @@ function FooterBar({
 function resolveButtonVariant(actionId: string, active?: boolean) {
   if (active) return "outline" as const;
   return "ghost" as const;
+}
+
+function MobileAboutView() {
+  return (
+    <main className="flex min-h-screen flex-col bg-background">
+      <div className="border-b bg-card px-6 py-10 text-center">
+        <Badge
+          variant="outline"
+          className="mb-3 rounded-full px-3 py-1 text-xs uppercase tracking-[0.3em]"
+        >
+          Desktop experience
+        </Badge>
+        <h1 className="text-2xl font-semibold tracking-tight">
+          MESH needs a larger screen
+        </h1>
+        <p className="mt-3 text-sm text-muted-foreground">
+          Switch to a desktop or wide tablet to access the editor. Learn more
+          about the project below.
+        </p>
+      </div>
+      <div className="flex-1 overflow-y-auto">
+        <AboutPage />
+      </div>
+    </main>
+  );
+}
+
+const LARGE_SCREEN_QUERY = "(min-width: 1024px)";
+
+function useIsLargeScreen() {
+  const [isLargeScreen, setIsLargeScreen] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const mediaQuery = window.matchMedia(LARGE_SCREEN_QUERY);
+    const handleChange = (event: MediaQueryListEvent) => {
+      setIsLargeScreen(event.matches);
+    };
+
+    setIsLargeScreen(mediaQuery.matches);
+
+    if (typeof mediaQuery.addEventListener === "function") {
+      mediaQuery.addEventListener("change", handleChange);
+      return () => mediaQuery.removeEventListener("change", handleChange);
+    }
+
+    mediaQuery.addListener(handleChange);
+    return () => mediaQuery.removeListener(handleChange);
+  }, []);
+
+  return isLargeScreen;
 }
