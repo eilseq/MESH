@@ -35,6 +35,7 @@ import {
 } from "@/components/ui/workspace";
 import { PageMenu } from "@/components/PageMenu";
 import { EditorProvider, useEditor } from "@/context/EditorContext";
+import type { LucideIcon } from "lucide-react";
 import { Play, Share2, Square, Terminal, X, Zap } from "lucide-react";
 import AboutPage from "@/components/AboutPage";
 import ArchivePage from "@/components/ArchivePage";
@@ -54,7 +55,7 @@ type WorkspacePage = "editor" | "archive" | "about";
 type FooterAction = {
   id: string;
   label: string;
-  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+  icon: LucideIcon;
   onClick?: () => void;
   toggle?: Exclude<PanelKey, null>;
   active?: boolean;
