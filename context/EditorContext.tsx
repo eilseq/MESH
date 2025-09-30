@@ -11,6 +11,25 @@ function preload() {
   img = loadImage('https://picsum.photos/600');
 };
 
+const preset = {
+    effectChain: [
+      { name:'pixelate',     params:{ size: 50 } },
+
+      { name:'rgbOffset',    params:{ maxOffset:15, alpha:150 } },
+      { name:'hSliceShift',  params:{ bands:16, maxShift:30 } },
+      { name:'vSliceTear',   params:{ slices:8, maxShift:20 } },
+      
+      { name:'noise',        params:{ strength: 15 } },
+      { name:'quantize',     params:{ levels:16 } },
+      { name:'dithering',    params:{} },
+      { name:'scanlines',    params:{ spacing:2, alpha:30 } },
+      { name:'ghosting',     params:{ alpha:60 } },
+
+      { name:'invertColors', params:{}},
+      { name:'posterize',    params:{ level: 12 }},
+    ]
+};
+
 function setup() {
   createCanvas(600, 600);
   pixelDensity(1);
@@ -20,137 +39,10 @@ function setup() {
   ghostBuf.pixelDensity(2);
   ghostBuf.clear();
 
-  function loadPreset(name) {
-    config = presets[name];
+    config = preset;
     ghostBuf.clear();
     console.log('Loaded preset:', name, '->', config.effectChain.map(e=>e.name).join(' -> '));
-  }
-  loadPreset('classic');
 }
-
-const presets = {
-  subtle: {
-    effectChain: [
-      { name:'pixelate',     params:{ size:8 } },
-      { name:'noise',        params:{ strength:5 } },
-      { name:'scanlines',    params:{ spacing:4, alpha:20 } },
-      { name:'ghosting',     params:{ alpha:50 } }
-    ]
-  },
-  classic: {
-    effectChain: [
-      { name:'rgbOffset',    params:{ maxOffset:15, alpha:150 } },
-      { name:'hSliceShift',  params:{ bands:16, maxShift:30 } },
-      { name:'vSliceTear',   params:{ slices:8, maxShift:20 } },
-      { name:'noise',        params:{ strength: 15 } },
-      { name:'quantize',     params:{ levels:16 } },
-      { name:'dithering',    params:{} },
-      { name:'scanlines',    params:{ spacing:2, alpha:30 } },
-      { name:'ghosting',     params:{ alpha:60 } }
-    ]
-  },
-  heavy: {
-    effectChain: [
-      { name:'waveDistort',  params:{ amplitude:10, frequency:0.1 } },
-      { name:'rgbOffset',    params:{ maxOffset:40, alpha:200 } },
-      { name:'hSliceShift',  params:{ bands:32, maxShift:80 } },
-      { name:'vSliceTear',   params:{ slices:16, maxShift:60 } },
-      { name:'pixelate',     params:{ size:4 } },
-      { name:'noise',        params:{ strength:30 } },
-      { name:'quantize',     params:{ levels:8 } },
-      { name:'dithering',    params:{} },
-      { name:'scanlines',    params:{ spacing:1, alpha:50 } },
-      { name:'ghosting',     params:{ alpha:80 } }
-    ]
-  },
-  retro: {
-    effectChain: [
-      { name:'quantize',     params:{ levels:4 } },
-      { name:'dithering',    params:{} },
-      { name:'scanlines',    params:{ spacing:3, alpha:40 } },
-      { name:'noise',        params:{ strength:10 } },
-      { name:'ghosting',     params:{ alpha:70 } }
-    ]
-  },
-  spectral: {
-    effectChain: [
-      { name:'waveDistort',  params:{ amplitude:8,  frequency:0.08 } },
-      { name:'rgbOffset',    params:{ maxOffset:25, alpha:180 } },
-      { name:'pixelate',     params:{ size:6 } },
-      { name:'noise',        params:{ strength:20 } },
-      { name:'hSliceShift',  params:{ bands:12, maxShift:25 } },
-      { name:'vSliceTear',   params:{ slices:6,  maxShift:15 } },
-      { name:'scanlines',    params:{ spacing:2, alpha:25 } },
-      { name:'ghosting',     params:{ alpha:65 } }
-    ]
-  },
-  cyberpunk: {
-    effectChain: [
-      { name:'rgbOffset',    params:{ maxOffset:30, alpha:180 } },
-      { name:'noise',        params:{ strength:25 } },
-      { name:'invertColors', params:{} },
-      { name:'hSliceShift',  params:{ bands:20, maxShift:50 } },
-      { name:'vSliceTear',   params:{ slices:10, maxShift:30 } },
-      { name:'scanlines',    params:{ spacing:1, alpha:60 } },
-      { name:'ghosting',     params:{ alpha:80 } }
-    ]
-  },
-  monochrome: {
-    effectChain: [
-      { name:'quantize',     params:{ levels:2 } },
-      { name:'dithering',    params:{} },
-      { name:'scanlines',    params:{ spacing:3, alpha:50 } },
-      { name:'ghosting',     params:{ alpha:60 } }
-    ]
-  },
-  chaos: {
-    effectChain: [
-      { name:'invertColors', params:{} },
-      { name:'waveDistort',  params:{ amplitude:15, frequency:0.15 } },
-      { name:'hSliceShift',  params:{ bands:24, maxShift:60 } },
-      { name:'noise',        params:{ strength:35 } },
-      { name:'vSliceTear',   params:{ slices:12, maxShift:50 } },
-      { name:'quantize',     params:{ levels:12 } },
-      { name:'dithering',    params:{} },
-      { name:'scanlines',    params:{ spacing:1, alpha:70 } },
-      { name:'ghosting',     params:{ alpha:90 } }
-    ]
-  },
-  // New presets below
-  lofi: {
-    effectChain: [
-      { name:'pixelate',     params:{ size:12 } },
-      { name:'posterize',    params:{ levels:6 } },
-      { name:'scanlines',    params:{ spacing:5, alpha:30 } },
-      { name:'ghosting',     params:{ alpha:40 } }
-    ]
-  },
-  glitchstorm: {
-    effectChain: [
-      { name:'hSliceShift',  params:{ bands:20, maxShift:50 } },
-      { name:'vSliceTear',   params:{ slices:20, maxShift:50 } },
-      { name:'shuffleRGB',   params:{ } },
-      { name:'noise',        params:{ strength:40 } },
-      { name:'scanlines',    params:{ spacing:2, alpha:50 } },
-      { name:'ghosting',     params:{ alpha:85 } }
-    ]
-  },
-  dreamy: {
-    effectChain: [
-      { name:'blur',         params:{ radius:3 } },
-      { name:'waveDistort',  params:{ amplitude:5, frequency:0.05 } },
-      { name:'rgbOffset',    params:{ maxOffset:10, alpha:100 } },
-      { name:'ghosting',     params:{ alpha:30 } }
-    ]
-  },
-  edgeDetect: {
-    effectChain: [
-      { name:'edgeDetect',   params:{ threshold:0.01 } },
-      { name:'invertColors', params:{} },
-      { name:'ghosting',     params:{ alpha:60 } }
-    ]
-  }
-};
 
 const effectFunctions = {
   rgbOffset({ maxOffset, alpha }) {
