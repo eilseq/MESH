@@ -1,6 +1,17 @@
-"use client";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-import { createContext, useContext, useMemo, useReducer } from "react";
+export type EditorControls = {
+  run: () => Promise<void>;
+  stop: () => void;
+};
+
+export type EditorState = {
+  code: string;
+  autoRun: boolean;
+  logs: string[];
+  canvas: HTMLCanvasElement | null;
+  controls?: EditorControls;
+};
 
 const DEFAULT_SKETCH = `// @EILSEQ 2024
 // Code and Assets License: https://unsplash.com/license$0
@@ -200,87 +211,46 @@ function draw() {
 };
 `;
 
-type State = {
-  code: string;
-  autoRun: boolean;
-  logs: string[];
-  canvas: HTMLCanvasElement | null;
+const initialState: EditorState = {
+  code: DEFAULT_SKETCH,
+  autoRun: true,
+  logs: [],
+  canvas: null,
+  controls: undefined,
 };
 
-type Actions = {
-  setCode: (v: string) => void;
-  toggleAutoRun: () => void;
-  appendLog: (line: string) => void;
-  clearLogs: () => void;
-  setCanvas: (c: HTMLCanvasElement | null) => void;
-  run?: () => Promise<void>; // registered by Canvas
-  stop?: () => void; // registered by Canvas
-  registerControls: (api: {
-    run: () => Promise<void>;
-    stop: () => void;
-  }) => void;
-};
+const editorSlice = createSlice({
+  name: "editor",
+  initialState,
+  reducers: {
+    setCode(state, action: PayloadAction<string>) {
+      state.code = action.payload;
+    },
+    toggleAutoRun(state) {
+      state.autoRun = !state.autoRun;
+    },
+    appendLog(state, action: PayloadAction<string>) {
+      state.logs.push(action.payload);
+    },
+    clearLogs(state) {
+      state.logs = [];
+    },
+    setCanvas(state, action: PayloadAction<HTMLCanvasElement | null>) {
+      return { ...state, canvas: action.payload };
+    },
+    registerControls(state, action: PayloadAction<EditorControls>) {
+      return { ...state, controls: action.payload };
+    },
+  },
+});
 
-const EditorCtx = createContext<(State & Actions) | null>(null);
+export const {
+  setCode,
+  toggleAutoRun,
+  appendLog,
+  clearLogs,
+  setCanvas,
+  registerControls,
+} = editorSlice.actions;
 
-type Action =
-  | { type: "SET_CODE"; code: string }
-  | { type: "TOGGLE_AUTORUN" }
-  | { type: "APPEND_LOG"; line: string }
-  | { type: "CLEAR_LOGS" }
-  | { type: "SET_CANVAS"; canvas: HTMLCanvasElement | null }
-  | { type: "REGISTER"; api: { run: () => Promise<void>; stop: () => void } };
-
-function reducer(state: State, action: Action): State {
-  switch (action.type) {
-    case "SET_CODE":
-      return { ...state, code: action.code };
-    case "TOGGLE_AUTORUN":
-      return { ...state, autoRun: !state.autoRun };
-    case "APPEND_LOG":
-      return { ...state, logs: [...state.logs, action.line] };
-    case "CLEAR_LOGS":
-      return { ...state, logs: [] };
-    case "SET_CANVAS":
-      return { ...state, canvas: action.canvas };
-    case "REGISTER":
-      return { ...state, ...action.api };
-    default:
-      return state;
-  }
-}
-
-export function EditorProvider({ children }: { children: React.ReactNode }) {
-  const [state, dispatch] = useReducer(reducer, {
-    code: DEFAULT_SKETCH,
-    autoRun: true,
-    logs: [],
-    canvas: null,
-  });
-
-  const api = useMemo<Actions>(
-    () => ({
-      setCode: (v) => {
-        dispatch({ type: "SET_CODE", code: v });
-      },
-      toggleAutoRun: () => dispatch({ type: "TOGGLE_AUTORUN" }),
-      appendLog: (line) => dispatch({ type: "APPEND_LOG", line }),
-      clearLogs: () => dispatch({ type: "CLEAR_LOGS" }),
-      setCanvas: (c) => dispatch({ type: "SET_CANVAS", canvas: c }),
-      registerControls: (api) => dispatch({ type: "REGISTER", api }),
-    }),
-    [dispatch]
-  );
-
-  return (
-    <EditorCtx.Provider value={{ ...state, ...api }}>
-      {children}
-    </EditorCtx.Provider>
-  );
-}
-
-export function useEditor() {
-  const ctx = useContext(EditorCtx);
-  if (!ctx) throw new Error("useEditor must be used within EditorProvider");
-  return ctx;
-}
+export default editorSlice.reducer;

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useEffect } from "react";
-import { useEditor } from "@/context/EditorContext";
+import { useEditor } from "@/hooks/useEditor";
 import { useP5 } from "@/hooks/useP5";
 import { CanvasFrame } from "@/components/ui/canvas-frame";
 
@@ -19,8 +19,11 @@ export default function Canvas() {
 
   useEffect(() => {
     clearLogs();
+  }, [clearLogs]);
+
+  useEffect(() => {
     registerControls({ run: api.run, stop: api.stop });
-  }, []);
+  }, [api.run, api.stop, registerControls]);
 
   return <CanvasFrame ref={containerRef} />;
 }

@@ -17,6 +17,11 @@ export function useP5(
 ) {
   const runnerRef = useRef<P5Runner | null>(null);
   const rafRef = useRef<number | null>(null);
+  const latestCodeRef = useRef(code);
+
+  useEffect(() => {
+    latestCodeRef.current = code;
+  }, [code]);
 
   const cancelCanvasWatch = useCallback(() => {
     if (typeof window === "undefined") return;
@@ -88,15 +93,16 @@ export function useP5(
   }, [autoRun, code, scheduleCanvasWatch]);
 
   // API to consumer
-  return {
-    run: async () => {
-      if (!runnerRef.current) return;
-      await runnerRef.current.run(code);
-      scheduleCanvasWatch();
-    },
-    stop: () => {
-      runnerRef.current?.stop();
-      cancelCanvasWatch();
-    },
-  };
+  const run = useCallback(async () => {
+    if (!runnerRef.current) return;
+    await runnerRef.current.run(latestCodeRef.current);
+    scheduleCanvasWatch();
+  }, [scheduleCanvasWatch]);
+
+  const stop = useCallback(() => {
+    runnerRef.current?.stop();
+    cancelCanvasWatch();
+  }, [cancelCanvasWatch]);
+
+  return { run, stop };
 }

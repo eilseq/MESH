@@ -7,7 +7,7 @@ import {
   DockScrollArea,
   DockLogOutput,
 } from "@/components/ui/dock-panel";
-import { useEditor } from "@/context/EditorContext";
+import { useEditor } from "@/hooks/useEditor";
 
 export default function Console() {
   const { logs, clearLogs } = useEditor();

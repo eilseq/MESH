@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Editor as MonacoEditor } from "@monaco-editor/react";
 
 import { FieldStack } from "@/components/ui/field";
-import { useEditor } from "@/context/EditorContext";
+import { useEditor } from "@/hooks/useEditor";
 import {
   THEME_CHANGE_EVENT,
   getDocumentTheme,
