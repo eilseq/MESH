@@ -68,7 +68,13 @@ export default function BlueskyPost() {
 
   async function post() {
     try {
-      if (!canvas) {
+      const canvasFromDom =
+        canvas ||
+        (typeof document !== "undefined"
+          ? (document.querySelector("canvas") as HTMLCanvasElement | null)
+          : null);
+
+      if (!canvasFromDom) {
         setStatus("❌ No canvas to capture.");
         return;
       }
@@ -80,7 +86,7 @@ export default function BlueskyPost() {
       const captionToPost = includeLicense
         ? ensureLicenseSuffix(caption)
         : caption;
-      await client.postImageFromCanvas(canvas, captionToPost);
+      await client.postImageFromCanvas(canvasFromDom, captionToPost);
 
       setStatus("✅ Posted to Bluesky!");
     } catch (e: any) {

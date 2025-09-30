@@ -82,12 +82,10 @@ export class P5Runner {
   /** Run a new sketch; replaces any previous instance. */
   async run(code: string) {
     await this.initIfNeeded();
-    this.stop();
+    const previousInstance = this.instance;
 
+    this.restoreConsole();
     this.undoConsole = hijackConsole(this.onLog);
-
-    // clear container for a fresh canvas mount
-    this.container.innerHTML = "";
 
     let factory: (p: any) => void;
     try {
@@ -98,22 +96,31 @@ export class P5Runner {
       return;
     }
 
+    let nextInstance: any | null = null;
     try {
-      this.instance = new this.p5mod(factory, this.container);
+      nextInstance = new this.p5mod(factory, this.container);
     } catch (e: any) {
       this.onLog(`[error] ${e?.message || e}`);
       this.restoreConsole();
+      return;
     }
+
+    if (previousInstance && previousInstance !== nextInstance) {
+      try {
+        previousInstance.remove();
+      } catch {}
+    }
+
+    this.instance = nextInstance;
   }
 
   /** Stop and dispose current sketch. */
   stop() {
-    if (this.instance && typeof this.instance.remove === "function") {
+    if (this.instance && typeof this.instance.noLoop === "function") {
       try {
-        this.instance.remove();
+        this.instance.noLoop();
       } catch {}
     }
-    this.instance = null;
     this.restoreConsole();
   }
 
