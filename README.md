@@ -31,7 +31,7 @@ BLUESKY_IDENTIFIER=you.bsky.social
 BLUESKY_APP_PASSWORD=xxxx-xxxx-xxxx-xxxx
 ```
 
-Without these values the archive will gracefully degrade, but authenticated credentials improve reliability. Use a Bluesky *app password*, not your main login.
+Without these values the archive will gracefully degrade, but authenticated credentials improve reliability. Use a Bluesky _app password_, not your main login.
 
 ## Development workflow
 
@@ -51,14 +51,14 @@ We run a zero-trust policy for credentials. Never commit `.env*` files or hard-c
 
 ## Architecture overview
 
-| Path | Purpose |
-| ---- | ------- |
-| `app/` | Next.js routes, including the editor workspace (`page.tsx`) and archive API. |
+| Path          | Purpose                                                                                                |
+| ------------- | ------------------------------------------------------------------------------------------------------ |
+| `app/`        | Next.js routes, including the editor workspace (`page.tsx`) and archive API.                           |
 | `components/` | UI building blocks: Monaco editor wrapper, canvas, console, Bluesky form, and shared workspace shells. |
-| `hooks/` | Client hooks: `useEditor` exposes Redux-backed editor state; `useP5` wraps the custom runner. |
-| `lib/` | Platform utilities: theme helpers, Bluesky client, console bridge, and the `P5Runner`. |
-| `store/` | Redux store configuration and slice powering the editor. |
-| `docs/` | End-user documentation published via GitHub Pages. |
+| `hooks/`      | Client hooks: `useEditor` exposes Redux-backed editor state; `useP5` wraps the custom runner.          |
+| `lib/`        | Platform utilities: theme helpers, Bluesky client, console bridge, and the `P5Runner`.                 |
+| `store/`      | Redux store configuration and slice powering the editor.                                               |
+| `docs/`       | End-user documentation published via GitHub Pages.                                                     |
 
 Key files to know:
 
@@ -92,7 +92,3 @@ When GitHub Pages is enabled, share the published URL (for example `https://<org
 - Follow the development workflow above
 - Submit a pull request with context, screenshots when visual changes apply, and links to any relevant GitHub Pages updates
 - Ensure automated checks pass before requesting review
-
-## License
-
-The application code is released under an open source license (add here when selected). Sketches published from the editor can optionally append `#meshArchive CC-BY-SA` so the community can remix with attribution.
