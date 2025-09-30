@@ -31,7 +31,8 @@ import {
   WorkspaceFooter,
 } from "@/components/ui/workspace";
 import { PageMenu } from "@/components/PageMenu";
-import { EditorProvider, useEditor } from "@/context/EditorContext";
+import { StoreProvider } from "@/store/StoreProvider";
+import { useEditor } from "@/hooks/useEditor";
 import type { LucideIcon } from "lucide-react";
 import { Play, Share2, Square, Terminal, X, Zap } from "lucide-react";
 import AboutPage from "@/components/AboutPage";
@@ -39,9 +40,9 @@ import ArchivePage from "@/components/ArchivePage";
 
 export default function Page() {
   return (
-    <EditorProvider>
+    <StoreProvider>
       <Workspace />
-    </EditorProvider>
+    </StoreProvider>
   );
 }
 
