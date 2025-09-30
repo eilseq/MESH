@@ -32,6 +32,32 @@ const themeInitScript = `(() => {
   }
 })();`;
 
+const ignoreMonacoCancelScript = `(() => {
+  const shouldIgnore = (reason) => {
+    if (!reason) return false;
+    if (reason === "Canceled") return true;
+    if (typeof reason === "object") {
+      if (reason?.message === "Canceled") return true;
+      if (reason?.type === "cancelation") return true;
+    }
+    return false;
+  };
+  const handleRejection = (event) => {
+    if (shouldIgnore(event.reason)) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    }
+  };
+  const handleError = (event) => {
+    if (shouldIgnore(event.error)) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    }
+  };
+  window.addEventListener("unhandledrejection", handleRejection);
+  window.addEventListener("error", handleError);
+})();`;
+
 export default function RootLayout({
   children,
 }: {
@@ -41,6 +67,7 @@ export default function RootLayout({
     <html lang="en" className="dark" suppressHydrationWarning>
       <body className={cn(appBodyClass, fontSans.variable, fontMono.variable)}>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        <script dangerouslySetInnerHTML={{ __html: ignoreMonacoCancelScript }} />
         {children}
       </body>
     </html>
