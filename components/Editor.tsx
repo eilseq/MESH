@@ -3,15 +3,17 @@
 import { useCallback, useEffect, useId, useState } from "react";
 import { Editor as MonacoEditor } from "@monaco-editor/react";
 
-import { Label } from "@/components/ui/label";
 import { FieldStack } from "@/components/ui/field";
 import { useEditor } from "@/context/EditorContext";
-import { THEME_CHANGE_EVENT, getDocumentTheme, type ThemePreference } from "@/lib/theme";
+import {
+  THEME_CHANGE_EVENT,
+  getDocumentTheme,
+  type ThemePreference,
+} from "@/lib/theme";
 
 export default function Editor() {
   const { code, setCode } = useEditor();
-  const baseId = useId();
-  const labelId = `${baseId}-label`;
+
   const [monacoTheme, setMonacoTheme] = useState(() => {
     if (typeof document !== "undefined") {
       const theme = getDocumentTheme();
@@ -53,14 +55,7 @@ export default function Editor() {
 
   return (
     <FieldStack gap="sm" grow>
-      <Label id={labelId} variant="srOnly">
-        Sketch code
-      </Label>
-      <div
-        id={baseId}
-        aria-labelledby={labelId}
-        className="flex min-h-0 flex-1 overflow-hidden pt-2 border border-input bg-background ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2"
-      >
+      <div className="flex min-h-0 flex-1 overflow-hidden pt-2 border border-input bg-background ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
         <MonacoEditor
           path="sketch.js"
           language="javascript"
