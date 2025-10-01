@@ -278,13 +278,19 @@ function ArchivePostCard({ post }: { post: BlueskyPostView }) {
             )}
           >
             {images.map((image, index) => (
-              <Image
+              <div
                 key={image.fullsize || image.thumb || index}
-                src={image.thumb || image.fullsize}
-                alt={image.alt || "Bluesky attachment"}
-                loading="lazy"
-                className="max-h-72 w-full rounded-lg object-cover"
-              />
+                className="relative aspect-square w-full max-h-72"
+              >
+                <Image
+                  key={image.fullsize || image.thumb || index}
+                  src={image.thumb || image.fullsize}
+                  alt={image.alt || "Bluesky attachment"}
+                  loading="lazy"
+                  className="rounded-lg object-cover"
+                  fill
+                />
+              </div>
             ))}
           </div>
         )}
@@ -310,12 +316,15 @@ function Avatar({ author }: { author: BlueskyAuthor }) {
 
   if (author.avatar) {
     return (
-      <Image
-        src={author.avatar}
-        alt={author.displayName || author.handle}
-        loading="lazy"
-        className="size-10 rounded-full object-cover"
-      />
+      <div className="relative size-10">
+        <Image
+          src={author.avatar}
+          alt={author.displayName || author.handle}
+          loading="lazy"
+          className="object-cover rounded-full"
+          fill
+        />
+      </div>
     );
   }
 

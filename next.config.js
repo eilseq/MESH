@@ -8,6 +8,14 @@ const nextConfig = {
     // Fail production builds if lint errors are found
     ignoreDuringBuilds: false,
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "cdn.bsky.app",
+      },
+    ],
+  },
   webpack: (config) => {
     const alias = {
       "@": path.resolve(__dirname),
