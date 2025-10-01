@@ -1,4 +1,7 @@
-const path = require("path");
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -11,18 +14,18 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "cdn.bsky.app",
+        protocol: 'https',
+        hostname: 'cdn.bsky.app',
       },
     ],
   },
   webpack: (config) => {
     const alias = {
-      "@": path.resolve(__dirname),
-      "@components": path.resolve(__dirname, "components"),
-      "@context": path.resolve(__dirname, "context"),
-      "@hooks": path.resolve(__dirname, "hooks"),
-      "@lib": path.resolve(__dirname, "lib"),
+      '@': path.resolve(__dirname),
+      '@components': path.resolve(__dirname, 'components'),
+      '@context': path.resolve(__dirname, 'context'),
+      '@hooks': path.resolve(__dirname, 'hooks'),
+      '@lib': path.resolve(__dirname, 'lib'),
     };
 
     config.resolve.alias = {
@@ -33,4 +36,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+export default nextConfig;

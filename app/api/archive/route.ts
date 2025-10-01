@@ -1,6 +1,6 @@
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
 
-const HASHTAG_QUERY = "#meshArchive";
+const HASHTAG_QUERY = '#meshArchive';
 const DEFAULT_LIMIT = 30;
 const MAX_LIMIT = 50;
 
@@ -8,16 +8,16 @@ const IDENTIFIER = process.env.BLUESKY_IDENTIFIER;
 const APP_PASSWORD = process.env.BLUESKY_APP_PASSWORD;
 
 const LEXICON_ENDPOINTS = [
-  "https://bsky.social/xrpc/app.bsky.feed.searchPosts",
-  "https://public.api.bsky.app/xrpc/app.bsky.feed.searchPosts",
+  'https://bsky.social/xrpc/app.bsky.feed.searchPosts',
+  'https://public.api.bsky.app/xrpc/app.bsky.feed.searchPosts',
 ] as const;
 
-const SEARCH_API_ENDPOINT = "https://search.bsky.social/api/v1/search/posts";
+const SEARCH_API_ENDPOINT = 'https://search.bsky.social/api/v1/search/posts';
 
 const COMMON_HEADERS = {
-  Accept: "application/json",
-  "User-Agent":
-    "Mozilla/5.0 (compatible; MeshArchiveBot/1.0; +https://github.com/eilseq/p5js-editor)",
+  Accept: 'application/json',
+  'User-Agent':
+    'Mozilla/5.0 (compatible; MeshArchiveBot/1.0; +https://github.com/eilseq/p5js-editor)',
 } as const;
 
 type SearchPostsResponse = {
@@ -73,13 +73,13 @@ let sessionCache: BlueskySession | null = null;
 const PROVIDERS: Provider[] = [
   ...LEXICON_ENDPOINTS.map((endpoint) => ({
     name: endpoint,
-    requiresAuth: endpoint.startsWith("https://bsky.social"),
+    requiresAuth: endpoint.startsWith('https://bsky.social'),
     buildUrl: (limit: number, cursor?: string) => {
       const url = new URL(endpoint);
-      url.searchParams.set("q", HASHTAG_QUERY);
-      url.searchParams.set("limit", String(limit));
+      url.searchParams.set('q', HASHTAG_QUERY);
+      url.searchParams.set('limit', String(limit));
       if (cursor) {
-        url.searchParams.set("cursor", cursor);
+        url.searchParams.set('cursor', cursor);
       }
       return url;
     },
@@ -88,7 +88,7 @@ const PROVIDERS: Provider[] = [
       const posts = (Array.isArray(typed.posts) ? typed.posts : []).filter(
         isBlueskyPostView
       );
-      const cursor = typeof typed.cursor === "string" ? typed.cursor : null;
+      const cursor = typeof typed.cursor === 'string' ? typed.cursor : null;
       return { posts, cursor };
     },
   })),
@@ -96,11 +96,11 @@ const PROVIDERS: Provider[] = [
     name: SEARCH_API_ENDPOINT,
     buildUrl: (limit: number, cursor?: string) => {
       const url = new URL(SEARCH_API_ENDPOINT);
-      url.searchParams.set("q", HASHTAG_QUERY);
-      url.searchParams.set("sort", "latest");
-      url.searchParams.set("count", String(limit));
+      url.searchParams.set('q', HASHTAG_QUERY);
+      url.searchParams.set('sort', 'latest');
+      url.searchParams.set('count', String(limit));
       if (cursor) {
-        url.searchParams.set("cursor", cursor);
+        url.searchParams.set('cursor', cursor);
       }
       return url;
     },
@@ -110,7 +110,7 @@ const PROVIDERS: Provider[] = [
       const posts = hits
         .map(extractPostFromSearchHit)
         .filter(isBlueskyPostView);
-      const cursor = typeof typed.cursor === "string" ? typed.cursor : null;
+      const cursor = typeof typed.cursor === 'string' ? typed.cursor : null;
       return { posts, cursor };
     },
   },
@@ -118,8 +118,8 @@ const PROVIDERS: Provider[] = [
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const cursor = searchParams.get("cursor") ?? undefined;
-  const limitParam = Number.parseInt(searchParams.get("limit") ?? "", 10);
+  const cursor = searchParams.get('cursor') ?? undefined;
+  const limitParam = Number.parseInt(searchParams.get('limit') ?? '', 10);
   const limit = Number.isFinite(limitParam)
     ? Math.min(Math.max(limitParam, 1), MAX_LIMIT)
     : DEFAULT_LIMIT;
@@ -166,7 +166,7 @@ export async function GET(request: Request) {
             cursor: nextCursor,
             posts,
           },
-          { headers: { "Cache-Control": "no-store" } }
+          { headers: { 'Cache-Control': 'no-store' } }
         );
       } catch (error) {
         if (provider.requiresAuth && attempt < maxAttempts) {
@@ -177,7 +177,7 @@ export async function GET(request: Request) {
         errors.push({
           status: 502,
           body:
-            error instanceof Error ? error.message : "Unknown provider failure",
+            error instanceof Error ? error.message : 'Unknown provider failure',
           provider: provider.name,
         });
         break;
@@ -187,7 +187,7 @@ export async function GET(request: Request) {
 
   const lastError = errors[errors.length - 1];
   const body: ErrorResponse = {
-    error: "Failed to retrieve archive posts",
+    error: 'Failed to retrieve archive posts',
     details: formatErrorDetails(errors),
   };
   const status = lastError?.status ?? 502;
@@ -195,7 +195,7 @@ export async function GET(request: Request) {
 }
 
 function extractPostFromSearchHit(hit: unknown): BlueskyPostView | null {
-  if (!hit || typeof hit !== "object") return null;
+  if (!hit || typeof hit !== 'object') return null;
   const value =
     (hit as Record<string, unknown>).post ??
     (hit as Record<string, unknown>).value ??
@@ -204,18 +204,18 @@ function extractPostFromSearchHit(hit: unknown): BlueskyPostView | null {
 }
 
 function isBlueskyPostView(value: unknown): value is BlueskyPostView {
-  if (!value || typeof value !== "object") return false;
+  if (!value || typeof value !== 'object') return false;
   const data = value as Record<string, unknown>;
-  if (typeof data.uri !== "string" || typeof data.cid !== "string")
+  if (typeof data.uri !== 'string' || typeof data.cid !== 'string')
     return false;
 
   const author = data.author;
-  if (!author || typeof author !== "object") return false;
-  if (typeof (author as Record<string, unknown>).handle !== "string")
+  if (!author || typeof author !== 'object') return false;
+  if (typeof (author as Record<string, unknown>).handle !== 'string')
     return false;
 
   const record = data.record;
-  if (!record || typeof record !== "object") return false;
+  if (!record || typeof record !== 'object') return false;
 
   return true;
 }
@@ -225,19 +225,19 @@ async function buildRequestInit(provider: Provider): Promise<RequestInit> {
 
   if (provider.requiresAuth) {
     const session = await ensureSession();
-    headers.set("Authorization", `Bearer ${session.accessJwt}`);
+    headers.set('Authorization', `Bearer ${session.accessJwt}`);
   }
 
   return {
     headers,
-    cache: "no-store",
+    cache: 'no-store',
   };
 }
 
 async function ensureSession(): Promise<BlueskySession> {
   if (!IDENTIFIER || !APP_PASSWORD) {
     throw new Error(
-      "Missing BLUESKY_IDENTIFIER or BLUESKY_APP_PASSWORD environment variables"
+      'Missing BLUESKY_IDENTIFIER or BLUESKY_APP_PASSWORD environment variables'
     );
   }
 
@@ -246,11 +246,11 @@ async function ensureSession(): Promise<BlueskySession> {
   }
 
   const response = await fetch(
-    "https://bsky.social/xrpc/com.atproto.server.createSession",
+    'https://bsky.social/xrpc/com.atproto.server.createSession',
     {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         ...COMMON_HEADERS,
       },
       body: JSON.stringify({ identifier: IDENTIFIER, password: APP_PASSWORD }),
@@ -293,7 +293,7 @@ async function safeReadText(response: Response) {
   try {
     return await response.text();
   } catch (error) {
-    return error instanceof Error ? error.message : "";
+    return error instanceof Error ? error.message : '';
   }
 }
 
@@ -305,7 +305,7 @@ function formatErrorDetails(
       ({ status, body, provider }) =>
         `provider=${provider}; status=${status}; body=${truncate(body, 200)}`
     )
-    .join(" | ");
+    .join(' | ');
 }
 
 function truncate(value: string, maxLength: number) {

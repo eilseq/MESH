@@ -12,12 +12,12 @@ export function hijackConsole(onLog: LogFn) {
     return args
       .map((a) => {
         try {
-          return typeof a === "string" ? a : JSON.stringify(a);
+          return typeof a === 'string' ? a : JSON.stringify(a);
         } catch {
           return String(a);
         }
       })
-      .join(" ");
+      .join(' ');
   }
 
   console.log = (...a: unknown[]) => {

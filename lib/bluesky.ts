@@ -8,74 +8,74 @@ export class BlueskyClient {
 
   async login(identifier: string, password: string): Promise<BlueskySession> {
     const r = await fetch(
-      "https://bsky.social/xrpc/com.atproto.server.createSession",
+      'https://bsky.social/xrpc/com.atproto.server.createSession',
       {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ identifier, password }),
       }
     );
-    if (!r.ok) throw new Error("Login failed");
+    if (!r.ok) throw new Error('Login failed');
     const { accessJwt, did } = await r.json();
     this.session = { accessJwt, did };
     return this.session;
   }
 
   requireSession(): BlueskySession {
-    if (!this.session) throw new Error("Not logged in");
+    if (!this.session) throw new Error('Not logged in');
     return this.session;
   }
 
   async uploadBlob(blob: Blob) {
     const { accessJwt } = this.requireSession();
     const r = await fetch(
-      "https://bsky.social/xrpc/com.atproto.repo.uploadBlob",
+      'https://bsky.social/xrpc/com.atproto.repo.uploadBlob',
       {
-        method: "POST",
+        method: 'POST',
         headers: { Authorization: `Bearer ${accessJwt}` },
         body: blob,
       }
     );
-    if (!r.ok) throw new Error("Upload failed");
+    if (!r.ok) throw new Error('Upload failed');
     return r.json(); // { blob: { $type, ref, mimeType, size } }
   }
 
   async createPost(did: string, record: Record<string, unknown>) {
     const { accessJwt } = this.requireSession();
     const r = await fetch(
-      "https://bsky.social/xrpc/com.atproto.repo.createRecord",
+      'https://bsky.social/xrpc/com.atproto.repo.createRecord',
       {
-        method: "POST",
+        method: 'POST',
         headers: {
           Authorization: `Bearer ${accessJwt}`,
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           repo: did,
-          collection: "app.bsky.feed.post",
+          collection: 'app.bsky.feed.post',
           record,
         }),
       }
     );
-    if (!r.ok) throw new Error("Post failed");
+    if (!r.ok) throw new Error('Post failed');
     return r.json();
   }
 
-  async postImageFromCanvas(canvas: HTMLCanvasElement, text = "MESH Archive") {
+  async postImageFromCanvas(canvas: HTMLCanvasElement, text = 'MESH Archive') {
     const blob: Blob = await new Promise((res) =>
-      canvas.toBlob((b) => res(b!), "image/png")
+      canvas.toBlob((b) => res(b!), 'image/png')
     );
     const { blob: uploaded } = await this.uploadBlob(blob);
     const { did } = this.requireSession();
 
     const record = {
-      $type: "app.bsky.feed.post",
+      $type: 'app.bsky.feed.post',
       createdAt: new Date().toISOString(),
       text,
       ...buildFacetField(text),
       embed: {
-        $type: "app.bsky.embed.images",
-        images: [{ image: uploaded, alt: "MESH Archive" }],
+        $type: 'app.bsky.embed.images',
+        images: [{ image: uploaded, alt: 'MESH Archive' }],
       },
     };
 
@@ -105,10 +105,10 @@ function buildHashtagFacets(text: string) {
       const byteEnd = byteStart + encoder.encode(hashtag).length;
 
       return {
-        $type: "app.bsky.richtext.facet",
+        $type: 'app.bsky.richtext.facet',
         features: [
           {
-            $type: "app.bsky.richtext.facet#tag",
+            $type: 'app.bsky.richtext.facet#tag',
             tag,
           },
         ],
@@ -122,7 +122,7 @@ function buildHashtagFacets(text: string) {
       (
         value
       ): value is {
-        $type: "app.bsky.richtext.facet";
+        $type: 'app.bsky.richtext.facet';
         features: { $type: string; tag: string }[];
         index: { byteStart: number; byteEnd: number };
       } => value !== null

@@ -19,7 +19,9 @@ Update the `loadImage` call so the URL contains a seed. All edits happen in the 
 ```js
 const picsumSeed = 'mesh-zine-01';
 const picsumSize = 600;
-img = loadImage(`https://picsum.photos/seed/${picsumSeed}/${picsumSize}/${picsumSize}`);
+img = loadImage(
+  `https://picsum.photos/seed/${picsumSeed}/${picsumSize}/${picsumSize}`
+);
 ```
 
 Refreshing or rerunning the sketch now pulls the same photo. Change `picsumSeed` whenever you want a new base image. Add `console.log('seed', picsumSeed);` so friends can recreate your setup.
@@ -29,7 +31,7 @@ Refreshing or rerunning the sketch now pulls the same photo. Change `picsumSeed`
 Append query parameters directly in the template string:
 
 ```js
-`https://picsum.photos/seed/${picsumSeed}/${picsumSize}/${picsumSize}?grayscale&blur=2`
+`https://picsum.photos/seed/${picsumSeed}/${picsumSize}/${picsumSize}?grayscale&blur=2`;
 ```
 
 ## 3. Cycle through a curated seed list
@@ -86,13 +88,17 @@ function keyPressed() {
 }
 
 function loadSource(index) {
-  loadImage(sources[index], (next) => {
-    img = next;
-    redraw();
-    console.log('Loaded custom asset', sources[index]);
-  }, (err) => {
-    console.error('Failed to load asset', sources[index], err);
-  });
+  loadImage(
+    sources[index],
+    (next) => {
+      img = next;
+      redraw();
+      console.log('Loaded custom asset', sources[index]);
+    },
+    (err) => {
+      console.error('Failed to load asset', sources[index], err);
+    }
+  );
 }
 ```
 

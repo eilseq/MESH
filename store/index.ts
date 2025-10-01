@@ -1,6 +1,6 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore } from '@reduxjs/toolkit';
 
-import editorReducer from "./editorSlice";
+import editorReducer from './editorSlice';
 
 export const store = configureStore({
   reducer: {
@@ -9,11 +9,8 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: [
-          "editor/registerControls",
-          "editor/setCanvas",
-        ],
-        ignoredPaths: ["editor.controls", "editor.canvas"],
+        ignoredActions: ['editor/registerControls', 'editor/setCanvas'],
+        ignoredPaths: ['editor.controls', 'editor.canvas'],
       },
     }),
 });

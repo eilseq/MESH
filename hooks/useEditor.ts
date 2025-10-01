@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useCallback } from "react";
+import { useCallback } from 'react';
 
 import {
   appendLog,
@@ -11,8 +11,8 @@ import {
   toggleAutoRun,
   type EditorControls,
   type EditorState,
-} from "@/store/editorSlice";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
+} from '@/store/editorSlice';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
 
 type EditorActions = {
   setCode: (value: string) => void;
@@ -23,10 +23,10 @@ type EditorActions = {
   registerControls: (controls: EditorControls) => void;
 };
 
-type UseEditorResult = Omit<EditorState, "controls"> &
+type UseEditorResult = Omit<EditorState, 'controls'> &
   EditorActions & {
-    run?: EditorControls["run"];
-    stop?: EditorControls["stop"];
+    run?: EditorControls['run'];
+    stop?: EditorControls['stop'];
   };
 
 export function useEditor(): UseEditorResult {

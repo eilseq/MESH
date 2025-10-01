@@ -1,38 +1,38 @@
-"use client";
+'use client';
 
-import { useCallback, useEffect, useState } from "react";
-import { Editor as MonacoEditor } from "@monaco-editor/react";
+import { useCallback, useEffect, useState } from 'react';
+import { Editor as MonacoEditor } from '@monaco-editor/react';
 
-import { FieldStack } from "@/components/ui/field";
-import { useEditor } from "@/hooks/useEditor";
+import { FieldStack } from '@/components/ui/field';
+import { useEditor } from '@/hooks/useEditor';
 import {
   THEME_CHANGE_EVENT,
   getDocumentTheme,
   type ThemePreference,
-} from "@/lib/theme";
+} from '@/lib/theme';
 
 export default function Editor() {
   const { code, setCode } = useEditor();
 
   const [monacoTheme, setMonacoTheme] = useState(() => {
-    if (typeof document !== "undefined") {
+    if (typeof document !== 'undefined') {
       const theme = getDocumentTheme();
-      return theme === "dark" ? "vs-dark" : "vs-light";
+      return theme === 'dark' ? 'vs-dark' : 'vs-light';
     }
-    return "vs-dark";
+    return 'vs-dark';
   });
 
   useEffect(() => {
     const syncTheme = () => {
       const theme = getDocumentTheme();
-      setMonacoTheme(theme === "dark" ? "vs-dark" : "vs-light");
+      setMonacoTheme(theme === 'dark' ? 'vs-dark' : 'vs-light');
     };
 
     const handleThemeChange = (event: Event) => {
       const customEvent = event as CustomEvent<{ theme?: ThemePreference }>;
       const next = customEvent.detail?.theme;
-      if (next === "dark" || next === "light") {
-        setMonacoTheme(next === "dark" ? "vs-dark" : "vs-light");
+      if (next === 'dark' || next === 'light') {
+        setMonacoTheme(next === 'dark' ? 'vs-dark' : 'vs-light');
       } else {
         syncTheme();
       }
@@ -48,7 +48,7 @@ export default function Editor() {
 
   const handleChange = useCallback(
     (value?: string) => {
-      setCode(value ?? "");
+      setCode(value ?? '');
     },
     [setCode]
   );
@@ -62,14 +62,14 @@ export default function Editor() {
           value={code}
           onChange={handleChange}
           options={{
-            ariaLabel: "Sketch code editor",
+            ariaLabel: 'Sketch code editor',
             automaticLayout: true,
-            fontFamily: "var(--font-mono)",
+            fontFamily: 'var(--font-mono)',
             fontSize: 12,
             minimap: { enabled: false },
             scrollBeyondLastLine: false,
             smoothScrolling: true,
-            wordWrap: "on",
+            wordWrap: 'on',
           }}
           theme={monacoTheme}
           loading={

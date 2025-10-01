@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useRef, useEffect } from "react";
-import { useEditor } from "@/hooks/useEditor";
-import { useP5 } from "@/hooks/useP5";
-import { CanvasFrame } from "@/components/ui/canvas-frame";
+import { useRef, useEffect } from 'react';
+import { useEditor } from '@/hooks/useEditor';
+import { useP5 } from '@/hooks/useP5';
+import { CanvasFrame } from '@/components/ui/canvas-frame';
 
 export default function Canvas() {
   const containerRef = useRef<HTMLDivElement>(null);

@@ -1,8 +1,8 @@
 // Tiny runner that owns: p5 lifecycle, console bridging, and code wrapping.
 // Consumed by useP5() hook so components stay declarative.
 
-import type { LogFn } from "./consoleBridge";
-import { hijackConsole } from "./consoleBridge";
+import type { LogFn } from './consoleBridge';
+import { hijackConsole } from './consoleBridge';
 
 type P5Instance = {
   remove?: () => void;
@@ -31,7 +31,7 @@ export class P5Runner {
 
   async initIfNeeded() {
     if (!this.p5mod) {
-      const m = await import("p5");
+      const m = await import('p5');
       this.p5mod = m.default || m;
     }
   }
@@ -39,40 +39,40 @@ export class P5Runner {
   /** Wrap user code to behave like "global mode" inside instance mode. */
   private buildSketchFactory(code: string): (p: P5Instance) => void {
     const lifecycleFns = [
-      "preload",
-      "setup",
-      "draw",
-      "mouseClicked",
-      "mousePressed",
-      "mouseReleased",
-      "mouseMoved",
-      "mouseDragged",
-      "mouseWheel",
-      "doubleClicked",
-      "keyPressed",
-      "keyReleased",
-      "keyTyped",
-      "touchStarted",
-      "touchMoved",
-      "touchEnded",
-      "deviceMoved",
-      "deviceTurned",
-      "deviceShaken",
-      "windowResized",
+      'preload',
+      'setup',
+      'draw',
+      'mouseClicked',
+      'mousePressed',
+      'mouseReleased',
+      'mouseMoved',
+      'mouseDragged',
+      'mouseWheel',
+      'doubleClicked',
+      'keyPressed',
+      'keyReleased',
+      'keyTyped',
+      'touchStarted',
+      'touchMoved',
+      'touchEnded',
+      'deviceMoved',
+      'deviceTurned',
+      'deviceShaken',
+      'windowResized',
     ];
 
     const declarations = lifecycleFns
       .map((name) => `let __${name} = null;`)
-      .join("\n");
+      .join('\n');
     const captures = lifecycleFns
       .map((name) => `if (typeof ${name} === 'function') __${name} = ${name};`)
-      .join("\n");
+      .join('\n');
     const assignments = lifecycleFns
       .map(
         (name) =>
           `if (__${name}) { p.${name} = __${name}; } else { delete p.${name}; }`
       )
-      .join("\n");
+      .join('\n');
 
     const wrapped = `
       return function(p){
@@ -131,7 +131,7 @@ export class P5Runner {
 
   /** Stop and dispose current sketch. */
   stop() {
-    if (this.instance && typeof this.instance.noLoop === "function") {
+    if (this.instance && typeof this.instance.noLoop === 'function') {
       try {
         this.instance.noLoop();
       } catch {
@@ -150,7 +150,7 @@ export class P5Runner {
 
   getCanvasEl(): HTMLCanvasElement | null {
     return (
-      (this.container.querySelector("canvas") as HTMLCanvasElement) || null
+      (this.container.querySelector('canvas') as HTMLCanvasElement) || null
     );
   }
 }

@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import Image from "next/image";
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import Image from 'next/image';
 
 const PAGE_SIZE = 30;
 
-const ARCHIVE_ENDPOINT = "/api/archive";
+const ARCHIVE_ENDPOINT = '/api/archive';
 
 type BlueskyAuthor = {
   did: string;
@@ -46,7 +46,7 @@ type ArchiveResponse = {
 };
 
 const relativeFormatter = new Intl.RelativeTimeFormat(undefined, {
-  numeric: "auto",
+  numeric: 'auto',
 });
 
 export default function ArchivePage() {
@@ -61,13 +61,13 @@ export default function ArchivePage() {
 
   const loadMore = useCallback(
     async ({
-      source = "auto",
+      source = 'auto',
     }: {
-      source?: "auto" | "manual";
+      source?: 'auto' | 'manual';
     } = {}) => {
       if (isLoading) return;
       if (!hasMore && initialisedRef.current) return;
-      if (source === "auto" && haltAutoFetch) return;
+      if (source === 'auto' && haltAutoFetch) return;
 
       setIsLoading(true);
       setError(null);
@@ -75,13 +75,13 @@ export default function ArchivePage() {
       try {
         const params = new URLSearchParams({ limit: String(PAGE_SIZE) });
         if (cursor) {
-          params.set("cursor", cursor);
+          params.set('cursor', cursor);
         }
 
         const response = await fetch(
           `${ARCHIVE_ENDPOINT}?${params.toString()}`,
           {
-            method: "GET",
+            method: 'GET',
           }
         );
 
@@ -97,7 +97,7 @@ export default function ArchivePage() {
         setPosts((prev) => [...prev, ...newPosts]);
         setCursor(data.cursor);
         setHasMore(Boolean(data.cursor));
-        if (source === "manual") {
+        if (source === 'manual') {
           setHaltAutoFetch(false);
         }
       } catch (err) {
@@ -105,9 +105,9 @@ export default function ArchivePage() {
         setError(
           err instanceof Error
             ? err.message
-            : "Unable to load archive posts right now."
+            : 'Unable to load archive posts right now.'
         );
-        if (source === "auto") {
+        if (source === 'auto') {
           setHaltAutoFetch(true);
         }
       } finally {
@@ -121,7 +121,7 @@ export default function ArchivePage() {
   useEffect(() => {
     if (!initialisedRef.current) {
       initialisedRef.current = true;
-      loadMore({ source: "auto" });
+      loadMore({ source: 'auto' });
     }
   }, [loadMore]);
 
@@ -133,10 +133,10 @@ export default function ArchivePage() {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0]?.isIntersecting) {
-          loadMore({ source: "auto" });
+          loadMore({ source: 'auto' });
         }
       },
-      { rootMargin: "400px 0px 400px 0px" }
+      { rootMargin: '400px 0px 400px 0px' }
     );
 
     observer.observe(sentinel);
@@ -148,9 +148,9 @@ export default function ArchivePage() {
 
   const headerCopy = useMemo(
     () => ({
-      title: "MESH Feed",
+      title: 'MESH Feed',
       description:
-        "Every Bluesky post tagged with #meshArchive lands here. Keep scrolling to explore work-in-progress sketches, glitch studies, and finished experiments from across the community.",
+        'Every Bluesky post tagged with #meshArchive lands here. Keep scrolling to explore work-in-progress sketches, glitch studies, and finished experiments from across the community.',
     }),
     []
   );
@@ -184,7 +184,7 @@ export default function ArchivePage() {
               onClick={() => {
                 setError(null);
                 setHaltAutoFetch(false);
-                loadMore({ source: "manual" });
+                loadMore({ source: 'manual' });
               }}
             >
               Retry loading
@@ -223,14 +223,14 @@ export default function ArchivePage() {
 }
 
 function isBlueskyPostView(value: unknown): value is BlueskyPostView {
-  if (!value || typeof value !== "object") return false;
+  if (!value || typeof value !== 'object') return false;
   const data = value as Record<string, unknown>;
-  if (typeof data.uri !== "string" || typeof data.cid !== "string")
+  if (typeof data.uri !== 'string' || typeof data.cid !== 'string')
     return false;
   const author = data.author as Record<string, unknown> | undefined;
-  if (!author || typeof author.handle !== "string") return false;
+  if (!author || typeof author.handle !== 'string') return false;
   const record = data.record as Record<string, unknown> | undefined;
-  if (!record || typeof record !== "object") return false;
+  if (!record || typeof record !== 'object') return false;
   return true;
 }
 
@@ -273,8 +273,8 @@ function ArchivePostCard({ post }: { post: BlueskyPostView }) {
         {images.length > 0 && (
           <div
             className={cn(
-              "grid gap-3",
-              images.length > 1 ? "grid-cols-2" : "grid-cols-1"
+              'grid gap-3',
+              images.length > 1 ? 'grid-cols-2' : 'grid-cols-1'
             )}
           >
             {images.map((image, index) => (
@@ -285,7 +285,7 @@ function ArchivePostCard({ post }: { post: BlueskyPostView }) {
                 <Image
                   key={image.fullsize || image.thumb || index}
                   src={image.thumb || image.fullsize}
-                  alt={image.alt || "Bluesky attachment"}
+                  alt={image.alt || 'Bluesky attachment'}
                   loading="lazy"
                   className="rounded-lg object-cover"
                   fill
@@ -310,7 +310,7 @@ function ArchivePostCard({ post }: { post: BlueskyPostView }) {
 }
 
 function Avatar({ author }: { author: BlueskyAuthor }) {
-  const initials = (author.displayName || author.handle || "?")
+  const initials = (author.displayName || author.handle || '?')
     .slice(0, 2)
     .toUpperCase();
 
@@ -355,16 +355,16 @@ function extractImages(embed: BlueskyEmbed) {
   }
 
   if (isExternalEmbed(embed)) {
-    const thumb = typeof embed.thumb === "string" ? embed.thumb : undefined;
+    const thumb = typeof embed.thumb === 'string' ? embed.thumb : undefined;
     if (thumb) {
       return [
         {
           thumb,
           fullsize: thumb,
           alt:
-            (typeof embed.title === "string" && embed.title) ||
-            (typeof embed.description === "string" && embed.description) ||
-            "External link preview",
+            (typeof embed.title === 'string' && embed.title) ||
+            (typeof embed.description === 'string' && embed.description) ||
+            'External link preview',
         },
       ];
     }
@@ -376,9 +376,9 @@ function extractImages(embed: BlueskyEmbed) {
 function isImageEmbed(embed: BlueskyEmbed): embed is BlueskyEmbed & {
   images: BlueskyImage[];
 } {
-  if (!embed || typeof embed !== "object") return false;
-  const type = typeof embed.$type === "string" ? embed.$type : "";
-  if (!type.startsWith("app.bsky.embed.images")) return false;
+  if (!embed || typeof embed !== 'object') return false;
+  const type = typeof embed.$type === 'string' ? embed.$type : '';
+  if (!type.startsWith('app.bsky.embed.images')) return false;
   const images = (embed as { images?: unknown }).images;
   return Array.isArray(images);
 }
@@ -386,17 +386,17 @@ function isImageEmbed(embed: BlueskyEmbed): embed is BlueskyEmbed & {
 function isRecordWithMediaEmbed(embed: BlueskyEmbed): embed is BlueskyEmbed & {
   media: BlueskyEmbed;
 } {
-  if (!embed || typeof embed !== "object") return false;
-  const type = typeof embed.$type === "string" ? embed.$type : "";
-  if (!type.startsWith("app.bsky.embed.recordWithMedia")) return false;
+  if (!embed || typeof embed !== 'object') return false;
+  const type = typeof embed.$type === 'string' ? embed.$type : '';
+  if (!type.startsWith('app.bsky.embed.recordWithMedia')) return false;
   const media = (embed as { media?: unknown }).media;
-  return typeof media === "object" && media !== null;
+  return typeof media === 'object' && media !== null;
 }
 
 function isRecordEmbed(embed: BlueskyEmbed): embed is BlueskyEmbed {
-  if (!embed || typeof embed !== "object") return false;
-  const type = typeof embed.$type === "string" ? embed.$type : "";
-  return type.startsWith("app.bsky.embed.record");
+  if (!embed || typeof embed !== 'object') return false;
+  const type = typeof embed.$type === 'string' ? embed.$type : '';
+  return type.startsWith('app.bsky.embed.record');
 }
 
 function isExternalEmbed(embed: BlueskyEmbed): embed is BlueskyEmbed & {
@@ -404,27 +404,27 @@ function isExternalEmbed(embed: BlueskyEmbed): embed is BlueskyEmbed & {
   title?: string;
   description?: string;
 } {
-  if (!embed || typeof embed !== "object") return false;
-  const type = typeof embed.$type === "string" ? embed.$type : "";
-  return type.startsWith("app.bsky.embed.external") && "thumb" in embed;
+  if (!embed || typeof embed !== 'object') return false;
+  const type = typeof embed.$type === 'string' ? embed.$type : '';
+  return type.startsWith('app.bsky.embed.external') && 'thumb' in embed;
 }
 
 function extractNestedEmbed(value: unknown): BlueskyEmbed | null {
-  if (!value || typeof value !== "object") return null;
+  if (!value || typeof value !== 'object') return null;
   const record = value as Record<string, unknown>;
 
-  if (record.embed && typeof record.embed === "object") {
+  if (record.embed && typeof record.embed === 'object') {
     return record.embed as BlueskyEmbed;
   }
 
-  if (record.value && typeof record.value === "object") {
+  if (record.value && typeof record.value === 'object') {
     const nestedValue = record.value as Record<string, unknown>;
-    if (nestedValue.embed && typeof nestedValue.embed === "object") {
+    if (nestedValue.embed && typeof nestedValue.embed === 'object') {
       return nestedValue.embed as BlueskyEmbed;
     }
   }
 
-  if (record.record && typeof record.record === "object") {
+  if (record.record && typeof record.record === 'object') {
     return extractNestedEmbed(record.record);
   }
 
@@ -433,8 +433,8 @@ function extractNestedEmbed(value: unknown): BlueskyEmbed | null {
 
 function buildPostUrl(post: BlueskyPostView) {
   const handle = post.author?.handle;
-  if (!handle) return "https://bsky.app";
-  const segments = post.uri.split("/");
+  if (!handle) return 'https://bsky.app';
+  const segments = post.uri.split('/');
   const rkey = segments[segments.length - 1];
   if (!rkey) return `https://bsky.app/profile/${handle}`;
   return `https://bsky.app/profile/${handle}/post/${rkey}`;
@@ -442,19 +442,19 @@ function buildPostUrl(post: BlueskyPostView) {
 
 function formatRelativeTime(iso: string) {
   const date = new Date(iso);
-  if (Number.isNaN(date.getTime())) return "";
+  if (Number.isNaN(date.getTime())) return '';
 
   const now = Date.now();
   const diff = date.getTime() - now;
 
   const divisions: [Intl.RelativeTimeFormatUnit, number][] = [
-    ["year", 1000 * 60 * 60 * 24 * 365],
-    ["month", 1000 * 60 * 60 * 24 * 30],
-    ["week", 1000 * 60 * 60 * 24 * 7],
-    ["day", 1000 * 60 * 60 * 24],
-    ["hour", 1000 * 60 * 60],
-    ["minute", 1000 * 60],
-    ["second", 1000],
+    ['year', 1000 * 60 * 60 * 24 * 365],
+    ['month', 1000 * 60 * 60 * 24 * 30],
+    ['week', 1000 * 60 * 60 * 24 * 7],
+    ['day', 1000 * 60 * 60 * 24],
+    ['hour', 1000 * 60 * 60],
+    ['minute', 1000 * 60],
+    ['second', 1000],
   ];
 
   for (const [unit, ms] of divisions) {
@@ -464,14 +464,14 @@ function formatRelativeTime(iso: string) {
     }
   }
 
-  return "just now";
+  return 'just now';
 }
 
 function formatAbsoluteTime(iso: string) {
   const date = new Date(iso);
-  if (Number.isNaN(date.getTime())) return "";
+  if (Number.isNaN(date.getTime())) return '';
   return date.toLocaleString(undefined, {
-    dateStyle: "medium",
-    timeStyle: "short",
+    dateStyle: 'medium',
+    timeStyle: 'short',
   });
 }

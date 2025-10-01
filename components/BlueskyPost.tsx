@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import type { ChangeEvent } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { useEditor } from "@/hooks/useEditor";
-import { BlueskyClient } from "@/lib/bluesky";
-import { Switch } from "@/components/ui/switch";
+import { useState } from 'react';
+import type { ChangeEvent } from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { useEditor } from '@/hooks/useEditor';
+import { BlueskyClient } from '@/lib/bluesky';
+import { Switch } from '@/components/ui/switch';
 import {
   DockPanel,
   DockPanelContent,
@@ -18,13 +18,13 @@ import {
   DockFormFooter,
   DockFormStatus,
   DockFormNote,
-} from "@/components/ui/dock-panel";
-import Link from "next/link";
+} from '@/components/ui/dock-panel';
+import Link from 'next/link';
 
-const LICENSE_SUFFIX = "#meshArchive CC-BY-SA";
+const LICENSE_SUFFIX = '#meshArchive CC-BY-SA';
 
 const ensureLicenseSuffix = (text: string) => {
-  const trimmed = text.replace(/\s+$/g, "");
+  const trimmed = text.replace(/\s+$/g, '');
   if (!trimmed) {
     return LICENSE_SUFFIX;
   }
@@ -35,7 +35,7 @@ const ensureLicenseSuffix = (text: string) => {
 };
 
 const stripLicenseSuffix = (text: string) => {
-  const trimmed = text.replace(/\s+$/g, "");
+  const trimmed = text.replace(/\s+$/g, '');
   if (!trimmed.endsWith(LICENSE_SUFFIX)) {
     return text;
   }
@@ -43,15 +43,15 @@ const stripLicenseSuffix = (text: string) => {
     0,
     trimmed.length - LICENSE_SUFFIX.length
   );
-  return withoutSuffix.replace(/\s+$/g, "");
+  return withoutSuffix.replace(/\s+$/g, '');
 };
 
 export default function BlueskyPost() {
   const { canvas } = useEditor();
-  const [handle, setHandle] = useState("");
-  const [password, setPassword] = useState("");
-  const [caption, setCaption] = useState("");
-  const [status, setStatus] = useState("");
+  const [handle, setHandle] = useState('');
+  const [password, setPassword] = useState('');
+  const [caption, setCaption] = useState('');
+  const [status, setStatus] = useState('');
   const [includeLicense, setIncludeLicense] = useState(false);
 
   const handleCaptionChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -70,25 +70,25 @@ export default function BlueskyPost() {
     try {
       const canvasFromDom =
         canvas ||
-        (typeof document !== "undefined"
-          ? (document.querySelector("canvas") as HTMLCanvasElement | null)
+        (typeof document !== 'undefined'
+          ? (document.querySelector('canvas') as HTMLCanvasElement | null)
           : null);
 
       if (!canvasFromDom) {
-        setStatus("❌ No canvas");
+        setStatus('❌ No canvas');
         return;
       }
-      setStatus("🔑 Logging in…");
+      setStatus('🔑 Logging in…');
       const client = new BlueskyClient();
       await client.login(handle.trim(), password.trim());
 
-      setStatus("⬆️ Posting…");
+      setStatus('⬆️ Posting…');
       const captionToPost = includeLicense
         ? ensureLicenseSuffix(caption)
         : caption;
       await client.postImageFromCanvas(canvasFromDom, captionToPost);
 
-      setStatus("✅ Posted to Bluesky!");
+      setStatus('✅ Posted to Bluesky!');
     } catch (e: unknown) {
       const message = e instanceof Error ? e.message : String(e);
       setStatus(`❌ ${message}`);
@@ -147,7 +147,7 @@ export default function BlueskyPost() {
                   htmlFor="bluesky-license-toggle"
                   className="text-xs font-normal leading-tight text-muted-foreground"
                 >
-                  By clicking this I apply{" "}
+                  By clicking this I apply{' '}
                   <Link
                     href="https://creativecommons.org/licenses/by-sa/4.0/"
                     className="underline hover:text-primary"
@@ -155,8 +155,8 @@ export default function BlueskyPost() {
                     rel="noreferrer"
                   >
                     CC-BY-SA
-                  </Link>{" "}
-                  license to my work and I submit it for publication in the{" "}
+                  </Link>{' '}
+                  license to my work and I submit it for publication in the{' '}
                   <Link href="#about" className="underline hover:text-primary">
                     MESH Zine
                   </Link>
@@ -167,7 +167,7 @@ export default function BlueskyPost() {
                 </Label>
               </div>
             </div>
-            <DockFormStatus>{status || ""}</DockFormStatus>
+            <DockFormStatus>{status || ''}</DockFormStatus>
           </DockFormFooter>
           <DockFormNote>
             We recommend use a Bluesky

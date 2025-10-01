@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useRef } from "react";
-import { P5Runner } from "@/lib/p5runner";
+import { useCallback, useEffect, useRef } from 'react';
+import { P5Runner } from '@/lib/p5runner';
 
 export function useP5(
   container: React.RefObject<HTMLDivElement>,
@@ -24,7 +24,7 @@ export function useP5(
   }, [code]);
 
   const cancelCanvasWatch = useCallback(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window === 'undefined') return;
     if (rafRef.current !== null) {
       window.cancelAnimationFrame(rafRef.current);
       rafRef.current = null;
@@ -33,7 +33,7 @@ export function useP5(
 
   const scheduleCanvasWatch = useCallback(() => {
     if (!runnerRef.current) return;
-    if (typeof window === "undefined") {
+    if (typeof window === 'undefined') {
       const canvas = runnerRef.current.getCanvasEl();
       if (canvas) {
         onCanvas(canvas);

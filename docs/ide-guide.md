@@ -36,7 +36,7 @@ The custom runner (`lib/p5runner.ts`) wraps your sketch in instance mode, mirror
 
 1. Run your sketch and confirm the canvas shows the frame you want to publish.
 2. Open the publishing panel from the share icon. This mounts `components/BlueskyPost.tsx`.
-3. Enter your Bluesky handle and an *app password* (create one at `https://bsky.app/settings/app-passwords`).
+3. Enter your Bluesky handle and an _app password_ (create one at `https://bsky.app/settings/app-passwords`).
 4. Write a caption. Enable the CC-BY-SA switch if you want the helper text `#meshArchive CC-BY-SA` appended automatically.
 5. Click **Publish**. The client captures the current canvas, uploads it, and posts through Bluesky's upload API.
 6. Watch the inline status indicator for success or error messages.
@@ -64,13 +64,13 @@ To enable authenticated lookup (which improves reliability), set `BLUESKY_IDENTI
 
 ## Keyboard cheat sheet
 
-| Action | Shortcut |
-| ------ | -------- |
-| Run sketch | `Cmd`/`Ctrl`+`Shift`+`Enter`
-| Toggle sidebar panels | Click the terminal or share icons in the footer (tooltips show labels)
-| Quick command palette | `F1` or `Cmd`/`Ctrl`+`Shift`+`P`
-| Duplicate line | `Shift`+`Alt`+`Arrow Down`
-| Move line | `Alt`+`Arrow Up/Down`
-| Multi-cursor | `Cmd`/`Ctrl`+`Click`
+| Action                | Shortcut                                                               |
+| --------------------- | ---------------------------------------------------------------------- |
+| Run sketch            | `Cmd`/`Ctrl`+`Shift`+`Enter`                                           |
+| Toggle sidebar panels | Click the terminal or share icons in the footer (tooltips show labels) |
+| Quick command palette | `F1` or `Cmd`/`Ctrl`+`Shift`+`P`                                       |
+| Duplicate line        | `Shift`+`Alt`+`Arrow Down`                                             |
+| Move line             | `Alt`+`Arrow Up/Down`                                                  |
+| Multi-cursor          | `Cmd`/`Ctrl`+`Click`                                                   |
 
 The Monaco command palette exposes many more bindings; press `F1` while focused in the editor to explore.
