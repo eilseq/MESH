@@ -65,9 +65,7 @@ export class P5Runner {
       .map((name) => `let __${name} = null;`)
       .join("\n");
     const captures = lifecycleFns
-      .map(
-        (name) => `if (typeof ${name} === 'function') __${name} = ${name};`
-      )
+      .map((name) => `if (typeof ${name} === 'function') __${name} = ${name};`)
       .join("\n");
     const assignments = lifecycleFns
       .map(
@@ -88,7 +86,7 @@ export class P5Runner {
         }
       }
     `;
-     
+
     return new Function(wrapped)() as (p: P5Instance) => void;
   }
 

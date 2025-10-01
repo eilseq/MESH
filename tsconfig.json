@@ -18,17 +18,28 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"],
-      "@components/*": ["components/*"],
-      "@context/*": ["context/*"],
-      "@hooks/*": ["hooks/*"],
-      "@lib/*": ["lib/*"]
+      "@/*": [
+        "./*"
+      ],
+      "@components/*": [
+        "components/*"
+      ],
+      "@context/*": [
+        "context/*"
+      ],
+      "@hooks/*": [
+        "hooks/*"
+      ],
+      "@lib/*": [
+        "lib/*"
+      ]
     },
     "plugins": [
       {
         "name": "next"
       }
-    ]
+    ],
+    "target": "ES2017"
   },
   "include": [
     "next-env.d.ts",
