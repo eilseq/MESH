@@ -1,20 +1,20 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { cva, type VariantProps } from "class-variance-authority";
+import { cva, type VariantProps } from 'class-variance-authority';
 
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils';
 
 const labelVariants = cva(
-  "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
+  'text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70',
   {
     variants: {
       variant: {
-        default: "",
-        srOnly: "sr-only",
+        default: '',
+        srOnly: 'sr-only',
       },
     },
     defaultVariants: {
-      variant: "default",
+      variant: 'default',
     },
   }
 );
@@ -32,6 +32,6 @@ const Label = React.forwardRef<HTMLLabelElement, LabelProps>(
     />
   )
 );
-Label.displayName = "Label";
+Label.displayName = 'Label';
 
 export { Label };

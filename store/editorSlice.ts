@@ -1,4 +1,4 @@
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 export type EditorControls = {
   run: () => Promise<void>;
@@ -220,7 +220,7 @@ const initialState: EditorState = {
 };
 
 const editorSlice = createSlice({
-  name: "editor",
+  name: 'editor',
   initialState,
   reducers: {
     setCode(state, action: PayloadAction<string>) {

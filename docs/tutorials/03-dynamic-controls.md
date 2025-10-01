@@ -34,7 +34,8 @@ Create a controllable version of the glitch sketch by wiring keyboard shortcuts 
      if (key === '2') controls.pixelateSize += 4;
      if (key === '3') controls.rgbOffsetMax = max(0, controls.rgbOffsetMax - 2);
      if (key === '4') controls.rgbOffsetMax += 2;
-     if (key === '5') controls.noiseStrength = max(0, controls.noiseStrength - 2);
+     if (key === '5')
+       controls.noiseStrength = max(0, controls.noiseStrength - 2);
      if (key === '6') controls.noiseStrength += 2;
      if (key === 'H' || key === 'h') controls.showHud = !controls.showHud;
      redraw();
@@ -75,7 +76,11 @@ Create a controllable version of the glitch sketch by wiring keyboard shortcuts 
 2. Copy the JSON output into a new constant:
 
    ```js
-   const savedPreset = { pixelateSize: 12, rgbOffsetMax: 18, noiseStrength: 28 };
+   const savedPreset = {
+     pixelateSize: 12,
+     rgbOffsetMax: 18,
+     noiseStrength: 28,
+   };
    Object.assign(controls, savedPreset);
    ```
 

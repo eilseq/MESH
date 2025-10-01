@@ -1,20 +1,24 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { Moon, Sun } from "lucide-react";
+import { useEffect, useState } from 'react';
+import { Moon, Sun } from 'lucide-react';
 
-import { Button } from "@/components/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { Button } from '@/components/ui/button';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import {
   THEME_CHANGE_EVENT,
   applyTheme,
   determineInitialTheme,
   getDocumentTheme,
   type ThemePreference,
-} from "@/lib/theme";
+} from '@/lib/theme';
 
 export function ThemeToggle() {
-  const [theme, setTheme] = useState<ThemePreference>(() => "dark");
+  const [theme, setTheme] = useState<ThemePreference>(() => 'dark');
 
   useEffect(() => {
     const initial = getDocumentTheme();
@@ -41,14 +45,14 @@ export function ThemeToggle() {
 
   const handleToggle = () => {
     setTheme((current) => {
-      const next = current === "dark" ? "light" : "dark";
+      const next = current === 'dark' ? 'light' : 'dark';
       applyTheme(next);
       return next;
     });
   };
 
-  const isDark = theme === "dark";
-  const label = isDark ? "Switch to light theme" : "Switch to dark theme";
+  const isDark = theme === 'dark';
+  const label = isDark ? 'Switch to light theme' : 'Switch to dark theme';
 
   return (
     <Tooltip>
