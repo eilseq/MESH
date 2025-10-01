@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 const PAGE_SIZE = 30;
 
@@ -277,7 +278,7 @@ function ArchivePostCard({ post }: { post: BlueskyPostView }) {
             )}
           >
             {images.map((image, index) => (
-              <img
+              <Image
                 key={image.fullsize || image.thumb || index}
                 src={image.thumb || image.fullsize}
                 alt={image.alt || "Bluesky attachment"}
@@ -309,7 +310,7 @@ function Avatar({ author }: { author: BlueskyAuthor }) {
 
   if (author.avatar) {
     return (
-      <img
+      <Image
         src={author.avatar}
         alt={author.displayName || author.handle}
         loading="lazy"
